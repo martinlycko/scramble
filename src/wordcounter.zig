@@ -30,12 +30,16 @@ pub fn WordCounter() type {
         pub fn countwords(self: *Self, string: []const u8) !void {
             var words = std.mem.split(u8, string, " ");
             while (words.next()) |word| {
-                const found = try self.items.getOrPut(word);
-                if (found.found_existing) {
-                    found.value_ptr.* += 1;
-                } else {
-                    found.value_ptr.* = 1;
-                }
+                try self.countword(word);
+            }
+        }
+
+        pub fn countword(self: *Self, word: []const u8) !void {
+            const found = try self.items.getOrPut(word);
+            if (found.found_existing) {
+                found.value_ptr.* += 1;
+            } else {
+                found.value_ptr.* = 1;
             }
         }
 
@@ -45,10 +49,13 @@ pub fn WordCounter() type {
         }
 
         // Need a function to get the wordcount by key
+        pub fn wordscounted(self: *Self) u32 {
+            return self.items.count();
+        }
     };
 }
 
-test "Lorem ipsum" {
+test "text - Lorem ipsum" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -63,7 +70,7 @@ test "Lorem ipsum" {
     try testing.expectEqual(WCount.getcount("NotInThere"), null);
 }
 
-test "test 3x" {
+test "text - test 3x" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -72,11 +79,11 @@ test "test 3x" {
     const text = "test test test";
     try WCount.countwords(text);
 
-    try testing.expectEqual(WCount.items.count(), 1);
+    try testing.expectEqual(WCount.wordscounted(), 1);
     try testing.expectEqual(WCount.getcount("test"), 3);
 }
 
-test "test 3x3" {
+test "text - test 3x3" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -85,7 +92,38 @@ test "test 3x3" {
     const text = "test1 test2 test3";
     try WCount.countwords(text);
 
-    try testing.expectEqual(WCount.items.count(), 3);
+    try testing.expectEqual(WCount.wordscounted(), 3);
+    try testing.expectEqual(WCount.getcount("test1"), 1);
+    try testing.expectEqual(WCount.getcount("test2"), 1);
+    try testing.expectEqual(WCount.getcount("test3"), 1);
+}
+
+test "word - test 3x" {
+    const a = testing.allocator;
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    const word = "test";
+    try WCount.countword(word);
+    try WCount.countword(word);
+    try WCount.countword(word);
+
+    try testing.expectEqual(WCount.wordscounted(), 1);
+    try testing.expectEqual(WCount.getcount("test"), 3);
+}
+
+test "word - test 3x3" {
+    const a = testing.allocator;
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    try WCount.countword("test1");
+    try WCount.countword("test2");
+    try WCount.countword("test3");
+
+    try testing.expectEqual(WCount.wordscounted(), 3);
     try testing.expectEqual(WCount.getcount("test1"), 1);
     try testing.expectEqual(WCount.getcount("test2"), 1);
     try testing.expectEqual(WCount.getcount("test3"), 1);
