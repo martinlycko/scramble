@@ -21,8 +21,13 @@ pub fn WordCounter() type {
             };
         }
 
+        /// Deinitialise the WordCounter and free memory
+        pub fn deinit(self: *Self) void {
+            self.items.deinit();
+        }
+
         /// Count words in a provided string
-        pub fn count(self: *Self, string: []const u8) !void {
+        pub fn countwords(self: *Self, string: []const u8) !void {
             var words = std.mem.split(u8, string, " ");
             while (words.next()) |word| {
                 const found = try self.items.getOrPut(word);
@@ -33,17 +38,55 @@ pub fn WordCounter() type {
                 }
             }
         }
+
+        /// Return the counted frequency of a word or null if word not found
+        pub fn getcount(self: *Self, word: []const u8) ?u32 {
+            return self.items.get(word);
+        }
+
+        // Need a function to get the wordcount by key
     };
 }
 
-test "basic" {
+test "Lorem ipsum" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
-    defer WCount.items.deinit();
+    defer WCount.deinit();
 
     const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    try WCount.countwords(text);
 
-    try WCount.count(text);
-    std.debug.print("{}", .{WCount.items.count()});
+    try testing.expectEqual(WCount.getcount("Lorem"), 1);
+    try testing.expectEqual(WCount.getcount("in"), 3);
+    // try testing.expectEqual(WCount.getcount("In"), 3);
+    try testing.expectEqual(WCount.getcount("NotInThere"), null);
+}
+
+test "test 3x" {
+    const a = testing.allocator;
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    const text = "test test test";
+    try WCount.countwords(text);
+
+    try testing.expectEqual(WCount.items.count(), 1);
+    try testing.expectEqual(WCount.getcount("test"), 3);
+}
+
+test "test 3x3" {
+    const a = testing.allocator;
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    const text = "test1 test2 test3";
+    try WCount.countwords(text);
+
+    try testing.expectEqual(WCount.items.count(), 3);
+    try testing.expectEqual(WCount.getcount("test1"), 1);
+    try testing.expectEqual(WCount.getcount("test2"), 1);
+    try testing.expectEqual(WCount.getcount("test3"), 1);
 }
