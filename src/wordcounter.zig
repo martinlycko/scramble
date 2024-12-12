@@ -34,6 +34,7 @@ pub fn WordCounter() type {
             }
         }
 
+        /// Adds a provided word
         pub fn countword(self: *Self, word: []const u8) !void {
             const found = try self.items.getOrPut(word);
             if (found.found_existing) {
@@ -48,7 +49,7 @@ pub fn WordCounter() type {
             return self.items.get(word);
         }
 
-        // Need a function to get the wordcount by key
+        /// Need a function to get the wordcount by key
         pub fn wordscounted(self: *Self) u32 {
             return self.items.count();
         }
