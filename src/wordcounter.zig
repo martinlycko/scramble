@@ -56,7 +56,7 @@ pub fn WordCounter() type {
     };
 }
 
-test "text - Lorem ipsum" {
+test "fixed - text - Lorem ipsum" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -67,11 +67,10 @@ test "text - Lorem ipsum" {
 
     try testing.expectEqual(WCount.getcount("Lorem"), 1);
     try testing.expectEqual(WCount.getcount("in"), 3);
-    // try testing.expectEqual(WCount.getcount("In"), 3);
     try testing.expectEqual(WCount.getcount("NotInThere"), null);
 }
 
-test "text - test 3x" {
+test "fixed - text - test 3x" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -84,7 +83,7 @@ test "text - test 3x" {
     try testing.expectEqual(WCount.getcount("test"), 3);
 }
 
-test "text - test 3x3" {
+test "fixed - text - test 3x3" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -99,7 +98,7 @@ test "text - test 3x3" {
     try testing.expectEqual(WCount.getcount("test3"), 1);
 }
 
-test "word - test 3x" {
+test "fixed - word - test 3x" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -114,7 +113,7 @@ test "word - test 3x" {
     try testing.expectEqual(WCount.getcount("test"), 3);
 }
 
-test "word - test 3x3" {
+test "fixed - word - test 3x3" {
     const a = testing.allocator;
 
     var WCount = WordCounter().init(a);
@@ -128,4 +127,49 @@ test "word - test 3x3" {
     try testing.expectEqual(WCount.getcount("test1"), 1);
     try testing.expectEqual(WCount.getcount("test2"), 1);
     try testing.expectEqual(WCount.getcount("test3"), 1);
+}
+
+test "file - text - Lorem ipsum" {
+    const a = testing.allocator;
+
+    var dir = try std.fs.cwd().openDir("data", .{});
+    defer dir.close();
+
+    var file = try dir.openFile("test-data1.txt", .{});
+    defer file.close();
+
+    const content = try file.readToEndAlloc(a, 10000);
+    defer a.free(content);
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    try WCount.countwords(content);
+
+    try testing.expectEqual(WCount.getcount("Lorem"), 1);
+    try testing.expectEqual(WCount.getcount("in"), 3);
+    try testing.expectEqual(WCount.getcount("NotInThere"), null);
+}
+
+test "file - text - Lorem ipsum 2x" {
+    const a = testing.allocator;
+
+    var dir = try std.fs.cwd().openDir("data", .{});
+    defer dir.close();
+
+    var file = try dir.openFile("test-data1.txt", .{});
+    defer file.close();
+
+    const content = try file.readToEndAlloc(a, 10000);
+    defer a.free(content);
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    try WCount.countwords(content);
+    try WCount.countwords(content);
+
+    try testing.expectEqual(WCount.getcount("Lorem"), 2);
+    try testing.expectEqual(WCount.getcount("in"), 6);
+    try testing.expectEqual(WCount.getcount("NotInThere"), null);
 }
