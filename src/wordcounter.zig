@@ -53,7 +53,35 @@ pub fn WordCounter() type {
         pub fn wordscounted(self: *Self) u32 {
             return self.items.count();
         }
+
+        /// Return an iterator contianing all counted words
+        pub fn countedwords(self: *Self) u32 {
+            return self.items.keyIterator();
+        }
+
+        /// Return an iterator contianing all counted words
+        pub fn printorderedwordlist(self: *Self) !void {
+            const words_slice = try self.allocator.alloc(std.StringHashMap(u32).Entry, self.wordscounted());
+            defer self.allocator.free(words_slice);
+
+            var i: usize = 0;
+            var it = self.items.iterator();
+            while (it.next()) |entry| : (i += 1) {
+                words_slice[i] = entry;
+            }
+            std.sort.insertion(std.StringHashMap(u32).Entry, words_slice, {}, compare);
+
+            var stdout = std.io.bufferedWriter(std.io.getStdOut().writer());
+            for (words_slice) |entry| {
+                try stdout.writer().print("{s} {d}\n", .{ entry.key_ptr.*, entry.value_ptr.* });
+            }
+            try stdout.flush();
+        }
     };
+}
+
+fn compare(_: void, a: std.StringHashMap(u32).Entry, b: std.StringHashMap(u32).Entry) bool {
+    return a.value_ptr.* > b.value_ptr.*;
 }
 
 test "fixed - text - Lorem ipsum" {
@@ -172,4 +200,6 @@ test "file - text - Lorem ipsum 2x" {
     try testing.expectEqual(WCount.getcount("Lorem"), 2);
     try testing.expectEqual(WCount.getcount("in"), 6);
     try testing.expectEqual(WCount.getcount("NotInThere"), null);
+
+    try WCount.printorderedwordlist();
 }
