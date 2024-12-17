@@ -23,6 +23,10 @@ pub fn WordCounter() type {
 
         /// Deinitialise the WordCounter and free memory
         pub fn deinit(self: *Self) void {
+            // var iter = self.items.iterator();
+            // while (iter.next()) |entry| {
+            //     self.allocator.free(entry.key_ptr.*);
+            // }
             self.items.deinit();
         }
 
@@ -36,9 +40,11 @@ pub fn WordCounter() type {
 
         /// Adds a provided word
         pub fn countword(self: *Self, word: []const u8) !void {
+            // const key = try self.allocator.dupe(u8, word);
             const found = try self.items.getOrPut(word);
             if (found.found_existing) {
                 found.value_ptr.* += 1;
+                //self.allocator.free(key);
             } else {
                 found.value_ptr.* = 1;
             }
