@@ -7,17 +7,28 @@ const testing = std.testing;
 const mem = std.mem;
 const Allocator = mem.Allocator;
 
+pub const options = struct {
+    const Self = @This();
+    split: std.ArrayList(u8),
+
+    fn init(self: *Self, allocator: Allocator) Self {
+        self.split.init(allocator);
+    }
+};
+
 pub fn WordCounter() type {
     return struct {
         const Self = @This();
         allocator: Allocator,
         items: std.StringHashMap(u32),
+        options: options,
 
         /// Initialise the hash map and set the allocator
         pub fn init(allocator: Allocator) Self {
             return Self{
                 .allocator = allocator,
                 .items = std.StringHashMap(u32).init(allocator),
+                .options = options.init(.options, allocator),
             };
         }
 
