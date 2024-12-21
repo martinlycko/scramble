@@ -23,10 +23,10 @@ pub fn WordCounter() type {
 
         /// Deinitialise the WordCounter and free memory
         pub fn deinit(self: *Self) void {
-            // var iter = self.items.iterator();
-            // while (iter.next()) |entry| {
-            //     self.allocator.free(entry.key_ptr.*);
-            // }
+            var iter = self.items.iterator();
+            while (iter.next()) |entry| {
+                self.allocator.free(entry.key_ptr.*);
+            }
             self.items.deinit();
         }
 
@@ -40,11 +40,11 @@ pub fn WordCounter() type {
 
         /// Adds a provided word
         pub fn countword(self: *Self, word: []const u8) !void {
-            // const key = try self.allocator.dupe(u8, word);
-            const found = try self.items.getOrPut(word);
+            const key = try self.allocator.dupe(u8, word);
+            const found = try self.items.getOrPut(key);
             if (found.found_existing) {
                 found.value_ptr.* += 1;
-                //self.allocator.free(key);
+                self.allocator.free(key);
             } else {
                 found.value_ptr.* = 1;
             }
@@ -60,12 +60,12 @@ pub fn WordCounter() type {
             return self.items.count();
         }
 
-        /// Return an iterator contianing all counted words
+        /// Return an iterator containing all counted words
         pub fn countedwords(self: *Self) u32 {
             return self.items.keyIterator();
         }
 
-        /// Return an iterator contianing all counted words
+        /// Print all counted words from most to least counted
         pub fn printorderedwordlist(self: *Self) !void {
             const words_slice = try self.allocator.alloc(std.StringHashMap(u32).Entry, self.wordscounted());
             defer self.allocator.free(words_slice);
@@ -86,6 +86,7 @@ pub fn WordCounter() type {
     };
 }
 
+/// Function to compare the which string has been counted most
 fn compare(_: void, a: std.StringHashMap(u32).Entry, b: std.StringHashMap(u32).Entry) bool {
     return a.value_ptr.* > b.value_ptr.*;
 }
@@ -207,5 +208,33 @@ test "file - text - Lorem ipsum 2x" {
     try testing.expectEqual(WCount.getcount("in"), 6);
     try testing.expectEqual(WCount.getcount("NotInThere"), null);
 
-    try WCount.printorderedwordlist();
+    //try WCount.printorderedwordlist();
+}
+
+test "iterate over files in directory" {
+    const a = testing.allocator;
+
+    var WCount = WordCounter().init(a);
+    defer WCount.deinit();
+
+    var dir = try std.fs.cwd().openDir("data", .{ .iterate = true });
+    defer dir.close();
+
+    var iter = dir.iterate();
+    while (try iter.next()) |entry| {
+        if (entry.kind == .file) {
+            //std.debug.print("{s} \n", .{entry.name});
+            var file = try dir.openFile(entry.name, .{});
+            defer file.close();
+
+            const content = try file.readToEndAlloc(a, 100000);
+            defer a.free(content);
+
+            try WCount.countwords(content);
+        }
+    }
+
+    try testing.expectEqual(WCount.getcount("Lorem"), 2);
+    try testing.expectEqual(WCount.getcount("in"), 6);
+    try testing.expectEqual(WCount.getcount("NotInThere"), null);
 }
