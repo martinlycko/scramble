@@ -4,8 +4,8 @@
 </script>
 
 <div class="middle-column">
-    <h1>{project.documents.documents.find((doc) => doc.id === parseInt(page.params.slug)).title}</h1>
-    <div>{@html project.documents.documents.find((doc) => doc.id === parseInt(page.params.slug)).content}</div>
+    <h1>{project.getDocumentById(Number(page.params.slug))?.title}</h1>
+    <div>{@html project.getDocumentById(Number(page.params.slug))?.content}</div>
 </div>
 
 <div class="right-column">

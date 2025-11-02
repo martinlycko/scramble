@@ -23,6 +23,15 @@ class Project {
         this.documents.push(newDoc);
         console.log("Added document:", newDoc);
     }
+
+    public getDocumentById(id: Number): Doc | null {
+        for (let doc of this.documents) {
+            if (doc.id === id) {
+                return doc;
+            }
+        }
+        return null;
+    }
 }
 
 export const project = new Project();
