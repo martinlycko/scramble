@@ -1,57 +1,34 @@
 <script lang="ts">
-	import Header from './Header.svelte';
-	import '../app.css';
+	import favicon from '$lib/assets/svelte-logo.svg';
 
+	import { page } from '$app/state';
 	let { children } = $props();
 </script>
 
-<div class="app">
-	<Header />
+<svelte:head>
+	<link rel="icon" href={favicon} />
+</svelte:head>
 
-	<main>
-		{@render children()}
-	</main>
-
-	<footer>
-		<p>
-			visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn about SvelteKit
-		</p>
-	</footer>
+<div class="sidenav">
+  <a href="/documents" class:active={page.url.pathname === "/documents"}>Docs</a>
 </div>
 
+{@render children?.()}
+
 <style>
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
+  .sidenav {
+    height: 100%;
+    width: 50px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: grey;
+    overflow-x: hidden;
+    padding-top: 3px;
+  }
 
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		width: 100%;
-		max-width: 64rem;
-		margin: 0 auto;
-		box-sizing: border-box;
-	}
-
-	footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding: 12px;
-	}
-
-	footer a {
-		font-weight: bold;
-	}
-
-	@media (min-width: 480px) {
-		footer {
-			padding: 12px 0;
-		}
-	}
+  .active {
+	background-color: white;
+  }
 </style>
