@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { project } from '$lib/project.svelte.js';
+  import { project } from '$lib/project.svelte.ts';
 
   let { children } = $props();
 </script>
@@ -14,8 +14,8 @@
     </div>
     <div class="scrollable">
         <ul class="ColumnList">
-            {#each project.documents as document}
-                <li class="ColumnListItem"><a href="/documents/{document.id}">{document.title}</a></li>
+            {#each project.documents as doc}
+                <li class="ColumnListItem"><a href="/documents/{doc.id}">{doc.title}</a></li>
             {/each}
         </ul>
     </div>        

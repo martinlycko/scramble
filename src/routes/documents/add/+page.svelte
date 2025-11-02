@@ -1,15 +1,11 @@
 <script lang="ts">
-  import { project } from '$lib/project.svelte.js';
+  import { project } from '$lib/project.svelte.ts';
 
   let title = $state('');
   let text = $state('');
 
   function addDocument() {
-    project.documents.push({
-        id: 1 + Math.max(0, ...project.documents.map(d => d.id)),
-        title: title,
-        content: text
-    })
+    project.addDocument(title, text);
   }
 </script>
 

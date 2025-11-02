@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/state';
-  import { project } from '$lib/project.svelte.js';
+  import { project } from '$lib/project.svelte.ts';
 </script>
 
 <div class="middle-column">
-    <h1>{project.documents.find((doc) => doc.id === parseInt(page.params.slug)).title}</h1>
-    <div>{@html project.documents.find((doc) => doc.id === parseInt(page.params.slug)).content}</div>
+    <h1>{project.documents.documents.find((doc) => doc.id === parseInt(page.params.slug)).title}</h1>
+    <div>{@html project.documents.documents.find((doc) => doc.id === parseInt(page.params.slug)).content}</div>
 </div>
 
 <div class="right-column">
