@@ -8,7 +8,7 @@
     project.documents.push({
         id: 1 + Math.max(0, ...project.documents.map(d => d.id)),
         title: title,
-        text: text
+        content: text
     })
   }
 </script>
