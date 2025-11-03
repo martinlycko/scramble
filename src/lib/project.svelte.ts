@@ -57,6 +57,25 @@ class Project {
         this.codes.push(newCode);
         console.log("Added code snippet:", newCode);
     }
+
+    public getThemeById(id: Number): Theme | null {
+        for (let theme of this.themes) {
+            if (theme.id === id) { 
+                return theme;
+            }
+        }        return null;
+    }
+
+    getCodedDocIDsForTheme(themeID: Number): Number[] {
+        return [...new Set(this.codes
+            .filter(code => code.themeID === themeID)
+            .map(code => code.documentID))];
+    }
+
+    getCodesByThemeAndDoc(themeID: Number, documentID: Number): Code[] {
+        return this.codes.filter(code => code.themeID === themeID && code.documentID === documentID);
+    }
+
 }
 
 export const project = new Project();

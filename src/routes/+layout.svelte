@@ -11,6 +11,7 @@
 
 <div class="sidenav">
   <a href="/documents" class:active={page.url.pathname === "/documents"}>Docs</a>
+  <a href="/themes" class:active={page.url.pathname === "/themes"}>Themes</a>
 </div>
 
 {@render children?.()}
