@@ -1,6 +1,13 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { project } from '$lib/project.svelte.ts';
+
+  let displayAddTheme = $state(false);
+  let newThemeTitle = $state('');
+
+  function toggleAddTheme() {
+    displayAddTheme = !displayAddTheme;
+  }
 </script>
 
 <div class="middle-column">
@@ -12,11 +19,19 @@
     <div class="row">
         <h3 class="row-item">Themes</h3>
         <div class="row-item right-button">
-            <a href='../add'>+</a>
+            <button onclick={toggleAddTheme}>+</button>
         </div>
     </div>
-    
+    {#if displayAddTheme}
+        <input bind:value={newThemeTitle} placeholder="Theme Title" />
+        <button onclick={() => { project.addTheme(newThemeTitle); newThemeTitle = ''; displayAddTheme = false; }}>Add</button>
+    {/if}
     <div class="scrollable">
+        {#each project.themes as theme}
+            <li class="ColumnList">
+                <a href="../../themes/{theme.id}">{theme.title}</a>
+            </li>
+        {/each}
     </div>
 </div>
 
