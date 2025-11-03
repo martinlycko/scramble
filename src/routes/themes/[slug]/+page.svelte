@@ -28,40 +28,4 @@
         margin: 0px;
         padding: 0px;
     }
-
-    .right-column{
-        float: left;
-        height: 100%;
-        left: 80%;
-        width: 20%;
-        background-color:#aaa;
-        position: fixed;
-    }
-
-    .row {
-        display:table;
-        background-color:#981111;
-        width: 100%;
-    }
-
-    .row-item {
-        display:table-cell;
-    }
-
-    .right-button {
-        text-align: right;
-    }
-
-    .ColumnList {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        padding: 0px;
-    }
-
-    .scrollable {
-        height: calc(100% - 40px);
-        overflow-y: auto;
-    }
 </style>

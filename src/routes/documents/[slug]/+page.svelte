@@ -81,14 +81,6 @@
         text-align: right;
     }
 
-    .ColumnList {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        padding: 0px;
-    }
-
     .scrollable {
         height: calc(100% - 40px);
         overflow-y: auto;
