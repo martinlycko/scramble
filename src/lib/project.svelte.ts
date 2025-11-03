@@ -1,5 +1,6 @@
 import { Doc } from "./datamodel/Doc";
 import { Theme } from "./datamodel/Theme";
+import { Code } from "./datamodel/Code";
 
 class Project {
     
@@ -13,7 +14,10 @@ class Project {
 
     //Theme list
     public themes: Theme[];
-    themes_max_id: Number; 
+    themes_max_id: Number;
+
+    //Coded snippets
+    public codes: Code[];
 
     public constructor() {
         this.name = null
@@ -22,6 +26,7 @@ class Project {
         this.doc_max_id = 0;
         this.themes = $state([]);
         this.themes_max_id = 0;
+        this.codes = $state([]);
     }
 
     public addDocument(title: String, text: String) {
@@ -45,6 +50,12 @@ class Project {
         const newTheme = new Theme(this.themes_max_id, title);
         this.themes.push(newTheme);
         console.log("Added theme:", newTheme);
+    }
+
+    public addCode(documentID: Number, themeID: Number, content: String) {
+        const newCode = new Code(documentID, themeID, content);
+        this.codes.push(newCode);
+        console.log("Added code snippet:", newCode);
     }
 }
 

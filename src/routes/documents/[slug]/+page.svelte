@@ -8,6 +8,15 @@
   function toggleAddTheme() {
     displayAddTheme = !displayAddTheme;
   }
+
+  function codeSelection(themeId: Number) {
+      const selection = window.getSelection()?.toString().trim();
+      if (!selection) {
+          console.log('No text selected.');
+          return;
+      }
+      project.addCode(Number(page.params.slug), themeId, selection);
+    }
 </script>
 
 <div class="middle-column">
@@ -28,9 +37,7 @@
     {/if}
     <div class="scrollable">
         {#each project.themes as theme}
-            <li class="ColumnList">
-                <a href="../../themes/{theme.id}">{theme.title}</a>
-            </li>
+            <button onclick={() => codeSelection(theme.id)}>"{theme.title}"</button><br>
         {/each}
     </div>
 </div>

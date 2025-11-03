@@ -5,7 +5,7 @@
   let text = $state('');
 
   function addDocument() {
-    project.addDocument(title, text);
+    project.addDocument(title, text.replace(/\n/g, '<br/>'));
   }
 </script>
 
