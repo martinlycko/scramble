@@ -11,7 +11,7 @@
 
   function codeSelection(themeId: Number) {
     const selection = window.getSelection();
-    const text = selection.toString().trim();
+    const text = selection.toString();
     if (!text  || selection.rangeCount === 0) {
         console.log('No text selected.');
         return;
@@ -24,7 +24,7 @@
     preRange.selectNodeContents(document.getElementById("document-container"));
     preRange.setEnd(range.startContainer, range.startOffset);
     const start = preRange.toString().length;
-    const length = range.toString().trim().length;
+    const length = range.toString().length;
     const end = start + length;
 
     project.addCode(Number(page.params.slug),
