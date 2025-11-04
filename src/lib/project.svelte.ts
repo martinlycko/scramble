@@ -52,8 +52,8 @@ class Project {
         console.log("Added theme:", newTheme);
     }
 
-    public addCode(documentID: Number, themeID: Number, content: String) {
-        const newCode = new Code(documentID, themeID, content);
+    public addCode(documentID: Number, themeID: Number, content: String, startPos: Number, endPos: Number, length: Number) {
+        const newCode = new Code(documentID, themeID, content, startPos, endPos, length);
         this.codes.push(newCode);
         console.log("Added code snippet:", newCode);
     }

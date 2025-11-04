@@ -10,18 +10,35 @@
   }
 
   function codeSelection(themeId: Number) {
-      const selection = window.getSelection()?.toString().trim();
-      if (!selection) {
-          console.log('No text selected.');
-          return;
-      }
-      project.addCode(Number(page.params.slug), themeId, selection);
+    const selection = window.getSelection();
+    const text = selection.toString().trim();
+    if (!text  || selection.rangeCount === 0) {
+        console.log('No text selected.');
+        return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const preRange = document.createRange();
+
+    // Clone range to measure text before selection
+    preRange.selectNodeContents(document.getElementById("document-container"));
+    preRange.setEnd(range.startContainer, range.startOffset);
+    const start = preRange.toString().length;
+    const length = range.toString().trim().length;
+    const end = start + length;
+
+    project.addCode(Number(page.params.slug),
+                    themeId,
+                    text,
+                    start,
+                    end,
+                    length);
     }
 </script>
 
 <div class="middle-column">
     <h1>{project.getDocumentById(Number(page.params.slug))?.title}</h1>
-    <div>{@html project.getDocumentById(Number(page.params.slug))?.content}</div>
+    <div id="document-container">{@html project.getDocumentById(Number(page.params.slug))?.content}</div>
 </div>
 
 <div class="right-column">

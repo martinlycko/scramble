@@ -1,8 +1,17 @@
 <script lang="ts">
 	import favicon from '$lib/assets/svelte-logo.svg';
-
 	import { page } from '$app/state';
 	let { children } = $props();
+
+  function openProject() {
+    // Placeholder for save functionality
+    console.log('Project opened.');
+  }
+  
+  function saveProject() {
+    // Placeholder for save functionality
+    console.log('Project saved.');
+  }
 </script>
 
 <svelte:head>
@@ -10,6 +19,8 @@
 </svelte:head>
 
 <div class="sidenav">
+  <button onclick={saveProject}>Open</button>
+  <button onclick={openProject}>Save</button>
   <a href="/documents" class:active={page.url.pathname === "/documents"}>Docs</a>
   <a href="/themes" class:active={page.url.pathname === "/themes"}>Themes</a>
 </div>
