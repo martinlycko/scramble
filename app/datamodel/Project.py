@@ -10,6 +10,9 @@ class Project:
         self.documents: list[Doc] = []
         self.doc_max_id: int = 0
 
+        # Themes
+        self.themes: list[str] = []
+
     def add_document(self, title: str, content: str) -> Doc:
         self.doc_max_id += 1
         new_doc = Doc(self.doc_max_id, title, content)
@@ -20,4 +23,8 @@ class Project:
         for doc in self.documents:
             if doc.id == doc_id:
                 return doc
+        return None
+    
+    def add_theme(self, theme: str) -> None:
+        self.themes.append(theme)
         return None
