@@ -7,9 +7,10 @@ from ..datamodel.Project import Project
 
 # Import other ui modules
 from .DocumentAdd import open_add_document_view
+from .DocumentView import open_document_view_window
 
-def open_document_view(document) -> None:
-    print(f"You clicked: {document}")
+def open_document_view(project: Project, id: int) -> None:
+    open_document_view_window(project, id)
 
 def open_add_document(project: Project) -> None:
     open_add_document_view(project)
@@ -32,5 +33,5 @@ def open_document_list_view(project: Project) -> None:
         btn = tk.Button(frame,
                         text=document.title,
                         width=20,
-                        command=lambda i=document.id: open_document_view(i))
+                        command=lambda i=document.id: open_document_view(project, i))
         btn.pack(pady=5)

@@ -2,8 +2,11 @@ from .Document import Document as Doc
 
 class Project:
     def __init__(self, name, description):
+        # Project attributes
         self.name: str = name
         self.description: str = description
+
+        # Documents
         self.documents: list[Doc] = []
         self.doc_max_id: int = 0
 
