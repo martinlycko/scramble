@@ -1,14 +1,16 @@
 <script lang="ts">
+  
 	import favicon from '$lib/assets/svelte-logo.svg';
 	import { page } from '$app/state';
+
 	let { children } = $props();
 
-  function openProject() {
-    // Placeholder for save functionality
-    console.log('Project opened.');
+  async function openProject() {  
+    // Placeholder for open functionality
+    console.log('💾 Opening save dialog...');
   }
   
-  function saveProject() {
+  async function saveProject() {
     // Placeholder for save functionality
     console.log('Project saved.');
   }
@@ -19,8 +21,8 @@
 </svelte:head>
 
 <div class="sidenav">
-  <button onclick={saveProject}>Open</button>
-  <button onclick={openProject}>Save</button>
+  <button onclick={() => openProject() }>Open</button>
+  <button onclick={() =>  saveProject() }>Save</button>
   <a href="/documents" class:active={page.url.pathname === "/documents"}>Docs</a>
   <a href="/themes" class:active={page.url.pathname === "/themes"}>Themes</a>
 </div>
