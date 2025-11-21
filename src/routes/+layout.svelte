@@ -3,11 +3,22 @@
 	import favicon from '$lib/assets/svelte-logo.svg';
 	import { page } from '$app/state';
 
+  import { open } from '@tauri-apps/plugin-dialog';
+
 	let { children } = $props();
 
   async function openProject() {  
-    // Placeholder for open functionality
-    console.log('💾 Opening save dialog...');
+    const selected = await open({
+      multiple: false,
+      filters: [
+        {
+          name: "Images",
+          extensions: ["png", "jpg", "jpeg", "gif"]
+        }
+      ]
+    });
+
+    console.log("Selected file:", selected);
   }
   
   async function saveProject() {
