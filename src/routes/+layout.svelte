@@ -3,7 +3,10 @@
 	import favicon from '$lib/assets/svelte-logo.svg';
 	import { page } from '$app/state';
 
-  import { open } from '@tauri-apps/plugin-dialog';
+  import { open, save } from '@tauri-apps/plugin-dialog';
+  import { writeFile } from '@tauri-apps/plugin-fs';
+
+  import { project } from '$lib/project.svelte.ts'
 
 	let { children } = $props();
 
@@ -12,8 +15,8 @@
       multiple: false,
       filters: [
         {
-          name: "Images",
-          extensions: ["png", "jpg", "jpeg", "gif"]
+          name: "Scramble Project",
+          extensions: ["scramble"]
         }
       ]
     });
@@ -22,8 +25,20 @@
   }
   
   async function saveProject() {
-    // Placeholder for save functionality
-    console.log('Project saved.');
+    // Open Save dialog
+    const filePath = await save({
+      title: "Save Scramble Project",
+      defaultPath: project.name + ".scramble",
+      filters: [{ name: "Scramble Project", extensions: ["scramble"] }]
+    });
+
+    if (!filePath) return; // user cancelled
+
+    const contents = JSON.stringify(project, null, 2);
+    const bytes = new TextEncoder().encode(contents);
+
+    // Write file
+    await writeFile(filePath, bytes);
   }
 </script>
 
