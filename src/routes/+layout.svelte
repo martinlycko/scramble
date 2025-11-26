@@ -4,14 +4,14 @@
 	import { page } from '$app/state';
 
   import { open, save } from '@tauri-apps/plugin-dialog';
-  import { writeFile } from '@tauri-apps/plugin-fs';
+  import { writeFile, readFile } from '@tauri-apps/plugin-fs';
 
   import { project } from '$lib/project.svelte.ts'
 
 	let { children } = $props();
 
   async function openProject() {  
-    const selected = await open({
+    const selectedFile = await open({
       multiple: false,
       filters: [
         {
@@ -21,7 +21,9 @@
       ]
     });
 
-    console.log("Selected file:", selected);
+    const bytes = await readFile(selectedFile?.toString() || "");
+    project.loadFromFile(bytes);
+    console.log("Selected file:", selectedFile);
   }
   
   async function saveProject() {

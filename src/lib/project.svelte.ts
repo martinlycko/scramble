@@ -5,6 +5,7 @@ import { Code } from "./datamodel/Code";
 class Project {
     
     //Project metadata
+    public loaded: boolean = false;
     public name: String | null;
     public file: String | null;
 
@@ -27,6 +28,35 @@ class Project {
         this.themes = $state([]);
         this.themes_max_id = 0;
         this.codes = $state([]);
+    }
+
+    public toJSON(): String {
+        return {
+            __type: "Project",
+            loaded: this.loaded,
+            name: this.name,
+            file: this.file,
+            doc_max_id: this.doc_max_id,
+            themes_max_id: this.themes_max_id,
+
+            // 🟢 Convert each subclass to JSON using its own toJSON()
+            documents: this.documents.map(doc => doc.toJSON()),
+            themes: this.themes.map(theme => theme.toJSON()),
+            codes: this.codes.map(code => code.toJSON())
+        };
+    }
+    
+    public loadFromFile(bytes: any) {
+        const jsonString = new TextDecoder().decode(bytes);
+        const data = JSON.parse(jsonString);
+
+        this.name = data.name;
+        this.file = data.file;
+        this.documents = data.documents.map((docData: any) => new Doc(docData.id, docData.title, docData.content));
+        this.doc_max_id = data.doc_max_id;
+        this.themes = data.themes.map((themeData: any) => new Theme(themeData.id, themeData.title));
+        this.themes_max_id = data.themes_max_id;
+        this.codes = data.codes.map((codeData: any) => new Code(codeData.documentID, codeData.themeID, codeData.content, codeData.startPos, codeData.endPos, codeData.length));
     }
 
     public addDocument(title: String, text: String) {

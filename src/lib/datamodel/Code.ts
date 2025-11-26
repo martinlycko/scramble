@@ -14,4 +14,27 @@ export class Code {
     this.endPos = endPos;
     this.length = length;
   }
+
+  public toJSON() {
+    return {
+      __type: "Code",  // identify the class type
+      documentID: this.documentID,
+      themeID: this.themeID,
+      content: this.content,
+      startPos: this.startPos,
+      endPos: this.endPos,
+      length: this.length
+    };
+  }
+
+  static fromJSON(json: any) {
+    return new Code(
+      json.documentID, 
+      json.themeID,
+      json.content,
+      json.startPos,
+      json.endPos,
+      json.length
+    );
+  }
 }

@@ -8,4 +8,21 @@ export class Doc {
     this.title = title;
     this.content = content;
   }
+
+  public toJSON() {
+    return {
+      __type: "Doc",  // identify the class type
+      id: this.id,
+      title: this.title,
+      content: this.content,
+    };
+  }
+  
+  public fromJSON(json: any) {
+    return new Doc(
+      json.id, 
+      json.title, 
+      json.content
+    );
+  }
 }
