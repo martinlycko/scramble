@@ -15,7 +15,7 @@ export class Code {
     this.length = length;
   }
 
-  public toJSON() {
+  public toJSON(): any {
     return {
       __type: "Code",  // identify the class type
       documentID: this.documentID,
@@ -27,7 +27,7 @@ export class Code {
     };
   }
 
-  static fromJSON(json: any) {
+  public static fromJSON(json: any) {
     return new Code(
       json.documentID, 
       json.themeID,

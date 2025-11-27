@@ -9,7 +9,7 @@ export class Doc {
     this.content = content;
   }
 
-  public toJSON() {
+  public toJSON(): any {
     return {
       __type: "Doc",  // identify the class type
       id: this.id,
@@ -18,7 +18,7 @@ export class Doc {
     };
   }
   
-  public fromJSON(json: any) {
+  public static fromJSON(json: any) {
     return new Doc(
       json.id, 
       json.title, 

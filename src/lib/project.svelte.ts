@@ -30,7 +30,7 @@ class Project {
         this.codes = $state([]);
     }
 
-    public toJSON(): String {
+    public toJSON(): any {
         return {
             __type: "Project",
             loaded: this.loaded,
@@ -39,7 +39,7 @@ class Project {
             doc_max_id: this.doc_max_id,
             themes_max_id: this.themes_max_id,
 
-            // 🟢 Convert each subclass to JSON using its own toJSON()
+            // Convert each subclass to JSON using its own toJSON()
             documents: this.documents.map(doc => doc.toJSON()),
             themes: this.themes.map(theme => theme.toJSON()),
             codes: this.codes.map(code => code.toJSON())
@@ -47,16 +47,20 @@ class Project {
     }
     
     public loadFromFile(bytes: any) {
+        // Decode the bytes to a string and parse the JSON
         const jsonString = new TextDecoder().decode(bytes);
         const data = JSON.parse(jsonString);
 
+        // Set all values directly importable from JSON
         this.name = data.name;
         this.file = data.file;
-        this.documents = data.documents.map((docData: any) => new Doc(docData.id, docData.title, docData.content));
         this.doc_max_id = data.doc_max_id;
-        this.themes = data.themes.map((themeData: any) => new Theme(themeData.id, themeData.title));
         this.themes_max_id = data.themes_max_id;
-        this.codes = data.codes.map((codeData: any) => new Code(codeData.documentID, codeData.themeID, codeData.content, codeData.startPos, codeData.endPos, codeData.length));
+
+        // Reconstruct subclass instances from JSON data
+        this.documents = data.documents.map((docData: any) => Doc.fromJSON(docData));
+        this.themes = data.themes.map((themeData: any) => Theme.fromJSON(themeData));
+        this.codes = data.codes.map((codeData: any) => Code.fromJSON(codeData));
     }
 
     public addDocument(title: String, text: String) {

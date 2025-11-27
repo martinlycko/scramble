@@ -7,7 +7,7 @@ export class Theme {
     this.title = title;
   }
 
-  public toJSON() {
+  public toJSON(): any {
     return {
       __type: "Theme",  // identify the class type
       id: this.id,
@@ -15,7 +15,7 @@ export class Theme {
     };
   }
 
-  public fromJSON(json: any) {
+  public static fromJSON(json: any) {
     return new Theme(
       json.id, 
       json.title
