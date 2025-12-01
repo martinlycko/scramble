@@ -156,23 +156,17 @@ class Project {
 
     renameThemeById(id: Number, newTitle: String) {
         const theme = this.getThemeById(id);
-        if (theme) {
-            theme.title = newTitle;
-            console.log(`Renamed theme with ID ${id} to "${newTitle}".`);
-        }   else { 
-            console.log(`Theme with ID ${id} not found.`);
-        }
+        theme.title = newTitle;
+        this.themes = this.themes.filter(theme => theme.id !== id);
+        this.themes.push(theme);
     }
 
     renameDocumentById(id: Number, newTitle: String) {
-        const document = this.getDocumentById(id);
-        if (document) {
-            document.title = newTitle;
-            console.log(`Renamed document with ID ${id} to "${newTitle}".`);
-        }   else { 
-            console.log(`Document with ID ${id} not found.`);
-        }
+        const doc = this.getDocumentById(id);
+        doc.title = newTitle;
+        this.documents = this.documents.filter(doc => doc.id !== id);
+        this.documents.push(doc);
     }
 }
 
-export const project = new Project();
+export const project = $state(new Project());
