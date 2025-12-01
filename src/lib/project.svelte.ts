@@ -142,6 +142,37 @@ class Project {
         return this.codes.filter(code => code.themeID === themeID && code.documentID === documentID);
     }
 
+    removeDocumentById(id: Number) {
+        this.documents = this.documents.filter(doc => doc.id !== id);
+        this.codes = this.codes.filter(code => code.documentID !== id);
+        console.log(`Removed document with ID ${id} and its associated codes.`);
+    }
+
+    removeThemeById(id: Number) {
+        this.themes = this.themes.filter(theme => theme.id !== id);
+        this.codes = this.codes.filter(code => code.themeID !== id);
+        console.log(`Removed theme with ID ${id} and its associated codes.`);
+    }
+
+    renameThemeById(id: Number, newTitle: String) {
+        const theme = this.getThemeById(id);
+        if (theme) {
+            theme.title = newTitle;
+            console.log(`Renamed theme with ID ${id} to "${newTitle}".`);
+        }   else { 
+            console.log(`Theme with ID ${id} not found.`);
+        }
+    }
+
+    renameDocumentById(id: Number, newTitle: String) {
+        const document = this.getDocumentById(id);
+        if (document) {
+            document.title = newTitle;
+            console.log(`Renamed document with ID ${id} to "${newTitle}".`);
+        }   else { 
+            console.log(`Document with ID ${id} not found.`);
+        }
+    }
 }
 
 export const project = new Project();

@@ -2,8 +2,20 @@
   import { page } from '$app/state';
   import { project } from '$lib/project.svelte.ts';
 
+  let displayDocMenu = $state(false);
+  let displayDocRename = $state(false);
   let displayAddTheme = $state(false);
+
+  let newDocTitle = $state('');
   let newThemeTitle = $state('');
+
+  function toggleDocMenu() {
+    displayDocMenu = !displayDocMenu;
+  }
+
+  function toggleDocRename() {
+    displayDocRename = !displayDocRename;
+  }
 
   function toggleAddTheme() {
     displayAddTheme = !displayAddTheme;
@@ -34,10 +46,36 @@
                     end,
                     length);
     }
+
+  function renameDocument() {
+    if (newDocTitle.trim() !== '') {
+      project.renameDocumentById(Number(page.params.slug), newDocTitle.trim());
+      newDocTitle = '';
+      displayDocRename = false;
+    }
+  }
 </script>
 
 <div class="middle-column">
-    <h1>{project.getDocumentById(Number(page.params.slug))?.title}</h1>
+    <div class="header">
+        <h1>{project.getDocumentById(Number(page.params.slug))?.title}</h1>
+        <div class="actions">
+            <button class="icon" onclick={toggleDocMenu}>⋮</button>
+        </div>
+    </div>
+    {#if displayDocMenu}
+        <div>
+            <button onclick={toggleDocRename}>Rename</button>
+            <button onclick={() => project.removeDocumentById(Number(page.params.slug))}>Delete</button>
+        </div>
+    {/if}
+    {#if displayDocRename}
+        <div>
+            <input bind:value={newDocTitle} placeholder="New Title" />
+            <button onclick={() => renameDocument()}>Save</button>
+            <button onclick={() => displayDocRename = false}>Cancel</button>
+        </div>
+    {/if}
     <div id="document-container">{@html project.getDocumentById(Number(page.params.slug))?.content}</div>
 </div>
 
@@ -65,7 +103,7 @@
         top: 0px;
         left: 20%;
         height: 100%;
-        width: calc(60% - 50px);
+        width: calc(60% - 5px);
         float: left;
         height: 100%;
     }
@@ -101,5 +139,23 @@
     .scrollable {
         height: calc(100% - 40px);
         overflow-y: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .actions {
+        display: flex;
+        align-self: right;
+        margin: 5px;
+    }
+
+    .icon {
+        font-size: 18px;
+        background: #eee;
+        border-radius: 4px;
+        cursor: pointer;
     }
 </style>
