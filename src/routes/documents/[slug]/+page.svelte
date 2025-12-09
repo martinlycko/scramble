@@ -4,10 +4,13 @@
 
   let displayDocMenu = $state(false);
   let displayDocRename = $state(false);
+  let displayRightMenu = $state("Themes");
   let displayAddTheme = $state(false);
+  let displayAddAttribute = $state(false);
 
   let newDocTitle = $state('');
   let newThemeTitle = $state('');
+  let newAttributeTitle = $state('');
 
   function toggleDocMenu() {
     displayDocMenu = !displayDocMenu;
@@ -19,6 +22,18 @@
 
   function toggleAddTheme() {
     displayAddTheme = !displayAddTheme;
+  }
+
+  function toggleAddAttribute() {
+    displayAddAttribute = !displayAddAttribute;
+  }
+
+  function toggleRightMenu() {
+    if (displayRightMenu==="Themes") {
+        displayRightMenu="Attributes"
+    } else {
+        displayRightMenu="Themes"
+    }
   }
 
   function codeSelection(themeId: Number) {
@@ -80,21 +95,42 @@
 </div>
 
 <div class="right-column">
-    <div class="row">
-        <h3 class="row-item">Themes</h3>
-        <div class="row-item right-button">
-            <button onclick={toggleAddTheme}>+</button>
+    {#if displayRightMenu==="Themes"}
+        <div class="row">
+            <h3 class="row-item">Themes</h3>
+            <div class="row-item right-button">
+                <button onclick={toggleAddTheme}>+</button>
+                <button onclick={toggleRightMenu}>C</button>
+            </div>    
         </div>
-    </div>
-    {#if displayAddTheme}
-        <input bind:value={newThemeTitle} placeholder="Theme Title" />
-        <button onclick={() => { project.addTheme(newThemeTitle); newThemeTitle = ''; displayAddTheme = false; }}>Add</button>
+        {#if displayAddTheme}
+            <input bind:value={newThemeTitle} placeholder="Theme Title" />
+            <button onclick={() => { project.addTheme(newThemeTitle); newThemeTitle = ''; displayAddTheme = false; }}>Add</button>
+        {/if}
+        <div class="scrollable">
+            {#each project.themes as theme}
+                <button onclick={() => codeSelection(theme.id)}>"{theme.title}"</button><br>
+            {/each}
+        </div>
     {/if}
-    <div class="scrollable">
-        {#each project.themes as theme}
-            <button onclick={() => codeSelection(theme.id)}>"{theme.title}"</button><br>
-        {/each}
-    </div>
+    {#if displayRightMenu==="Attributes"}
+        <div class="row">
+            <h3 class="row-item">Attributes</h3>
+            <div class="row-item right-button">
+                <button onclick={toggleAddAttribute}>+</button>
+                <button onclick={toggleRightMenu}>C</button>
+            </div>    
+        </div>
+        {#if displayAddAttribute}
+            <input bind:value={newAttributeTitle} placeholder="Attribute Name" />
+            <button onclick={() => { project.addAttribute(newAttributeTitle); newAttributeTitle = ''; displayAddAttribute = false; }}>Add</button>
+        {/if}
+        <div class="scrollable">
+            {#each Array.from(project.getDocumentById(Number(page.params.slug))?.attributes.entries()) as [key, value]}
+                <p>{key}: {value}</p>
+            {/each}
+        </div>
+    {/if}
 </div>
 
 <style>

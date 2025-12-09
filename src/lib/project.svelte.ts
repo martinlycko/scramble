@@ -132,41 +132,53 @@ class Project {
         }        return null;
     }
 
-    getCodedDocIDsForTheme(themeID: Number): Number[] {
+    public getCodedDocIDsForTheme(themeID: Number): Number[] {
         return [...new Set(this.codes
             .filter(code => code.themeID === themeID)
             .map(code => code.documentID))];
     }
 
-    getCodesByThemeAndDoc(themeID: Number, documentID: Number): Code[] {
+    public getCodesByThemeAndDoc(themeID: Number, documentID: Number): Code[] {
         return this.codes.filter(code => code.themeID === themeID && code.documentID === documentID);
     }
 
-    removeDocumentById(id: Number) {
+    public removeDocumentById(id: Number) {
         this.documents = this.documents.filter(doc => doc.id !== id);
         this.codes = this.codes.filter(code => code.documentID !== id);
         console.log(`Removed document with ID ${id} and its associated codes.`);
     }
 
-    removeThemeById(id: Number) {
+    public removeThemeById(id: Number) {
         this.themes = this.themes.filter(theme => theme.id !== id);
         this.codes = this.codes.filter(code => code.themeID !== id);
         console.log(`Removed theme with ID ${id} and its associated codes.`);
     }
 
-    renameThemeById(id: Number, newTitle: String) {
+    public renameThemeById(id: Number, newTitle: String) {
         const theme = this.getThemeById(id);
         theme.title = newTitle;
         this.themes = this.themes.filter(theme => theme.id !== id);
         this.themes.push(theme);
     }
 
-    renameDocumentById(id: Number, newTitle: String) {
+    public renameDocumentById(id: Number, newTitle: String) {
         const doc = this.getDocumentById(id);
         doc.title = newTitle;
         this.documents = this.documents.filter(doc => doc.id !== id);
         this.documents.push(doc);
     }
+
+    public addAttribute(key: String, docID: Number) {
+        //Check if attribute already exists
+        if (this.getDocumentById(docID)?.attributes.has(key)) {
+            console.log("Key exists!");
+        } else {
+            this.documents.forEach(doc => {
+                doc.attributes.set(key, null);
+            });
+        }
+        console.log("Added attribute:", key);
+    } 
 }
 
 export const project = $state(new Project());

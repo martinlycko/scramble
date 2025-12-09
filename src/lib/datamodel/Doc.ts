@@ -2,11 +2,13 @@ export class Doc {
   public id: Number;
   public title: String;
   public content: String;
+  public attributes: Map<String, any>;
 
-  public constructor(id: Number, title: String, content: String ) {
+  public constructor(id: Number, title: String, content: String, attributes: Map<String, any>) {
     this.id = id;
     this.title = title;
     this.content = content;
+    this.attributes = attributes;
   }
 
   public toJSON(): any {
@@ -15,6 +17,8 @@ export class Doc {
       id: this.id,
       title: this.title,
       content: this.content,
+      // Convert each subclass to JSON using its own toJSON()
+      attributes: Array.from(this.attributes.entries()).map(([key, value]) => ({ key, value }))
     };
   }
   
@@ -22,7 +26,8 @@ export class Doc {
     return new Doc(
       json.id, 
       json.title, 
-      json.content
+      json.content,
+      json.attributes ? new Map(json.attributes.map((attr: any) => [attr.key, attr.value])) : new Map<String, any>()
     );
   }
 }
