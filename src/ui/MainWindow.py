@@ -6,6 +6,13 @@ from PySide6.QtCore import Qt
 from Sidebar import Sidebar
 from MenuBar import AppMenuBar
 
+from Pages import (
+    DocumentsPage,
+    ThemesPage,
+    ProjectPage,
+    SettingsPage,
+)
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -24,25 +31,16 @@ class MainWindow(QMainWindow):
         self.sidebar = Sidebar()
         self.pages = QStackedWidget()
 
-        self.pages.addWidget(self._page("Documents"))
-        self.pages.addWidget(self._page("Themes"))
-        self.pages.addWidget(self._page("Project"))
-        self.pages.addWidget(self._page("Settings"))
+        self.pages.addWidget(DocumentsPage())
+        self.pages.addWidget(ThemesPage())
+        self.pages.addWidget(ProjectPage())
+        self.pages.addWidget(SettingsPage())
 
         self.sidebar.page_selected.connect(self.pages.setCurrentIndex)
         self.sidebar.page_selected.connect(self.sidebar.set_active)
 
         layout.addWidget(self.sidebar)
         layout.addWidget(self.pages)
-
-    def _page(self, text):
-        from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
-        w = QWidget()
-        layout = QVBoxLayout(w)
-        label = QLabel(text)
-        label.setAlignment(Qt.AlignCenter)
-        layout.addWidget(label)
-        return w
 
 
 if __name__ == "__main__":
