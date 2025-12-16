@@ -19,15 +19,15 @@ class Sidebar(QWidget):
 
         # Icons and their corresponding page indices
         top_buttons = [
-            (QStyle.StandardPixmap.SP_FileIcon, 0),      # Documents
-            (QStyle.StandardPixmap.SP_DesktopIcon, 1),   # Themes
+            (QStyle.StandardPixmap.SP_DirIcon, 0),                  # Documents
+            (QStyle.StandardPixmap.SP_FileDialogDetailedView, 1),   # Themes
         ]
         bottom_buttons = [
-            (QStyle.StandardPixmap.SP_FileDialogDetailedView, 2),  # Settings
-            (QStyle.StandardPixmap.SP_DirIcon, 3),                 # Projects
+            (QStyle.StandardPixmap.SP_FileDialogInfoView, 2),  # Project
+            (QStyle.StandardPixmap.SP_FileDialogListView, 3),  # Settings
         ]
 
-        # Add top and buttom buttons
+        # Add top and bottom buttons
         for icon, index in top_buttons:
             btn = self._make_button(style, icon, index)
             layout.addWidget(btn)

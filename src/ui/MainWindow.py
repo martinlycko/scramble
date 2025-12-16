@@ -20,8 +20,8 @@ class MainWindow(QMainWindow):
 
         self.pages.addWidget(self._page("Documents"))
         self.pages.addWidget(self._page("Themes"))
+        self.pages.addWidget(self._page("Project"))
         self.pages.addWidget(self._page("Settings"))
-        self.pages.addWidget(self._page("Projects"))
 
         self.sidebar.page_selected.connect(self.pages.setCurrentIndex)
         self.sidebar.page_selected.connect(self.sidebar.set_active)
