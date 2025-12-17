@@ -31,16 +31,37 @@ class MainWindow(QMainWindow):
         self.sidebar = Sidebar()
         self.pages = QStackedWidget()
 
-        self.pages.addWidget(DocumentsPage())
-        self.pages.addWidget(ThemesPage())
-        self.pages.addWidget(ProjectPage())
-        self.pages.addWidget(SettingsPage())
+        self.DocumentsPage = DocumentsPage()
+        self.ThemesPage = ThemesPage()
+        self.ProjectPage = ProjectPage()
+        self.SettingsPage = SettingsPage()
 
-        self.sidebar.page_selected.connect(self.pages.setCurrentIndex)
-        self.sidebar.page_selected.connect(self.sidebar.set_active)
+        self.pages.addWidget(self.DocumentsPage)
+        self.pages.addWidget(self.ThemesPage)
+        self.pages.addWidget(self.ProjectPage)
+        self.pages.addWidget(self.SettingsPage)
+
+        self.pages_map = {
+            "Docs": self.DocumentsPage,
+            "Themes": self.ThemesPage,
+            "Project": self.ProjectPage,
+            "Settings": self.SettingsPage,
+        }
+
+        self._connect_sidebar()
 
         layout.addWidget(self.sidebar)
         layout.addWidget(self.pages)
+
+    def show_page(self, name: str):
+        self.pages.setCurrentWidget(self.pages_map[name])
+        self.sidebar.set_active(name)
+
+    def _connect_sidebar(self):
+        self.sidebar.buttons[0].clicked.connect(lambda: self.show_page("Docs"))
+        self.sidebar.buttons[1].clicked.connect(lambda: self.show_page("Themes"))
+        self.sidebar.buttons[2].clicked.connect(lambda: self.show_page("Project"))
+        self.sidebar.buttons[3].clicked.connect(lambda: self.show_page("Settings"))
 
 
 if __name__ == "__main__":

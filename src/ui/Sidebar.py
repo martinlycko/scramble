@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt, QSize, Signal
 
 
 class Sidebar(QWidget):
-    page_selected = Signal(int)  # emits page index
+    page_selected = Signal(str)  # emits page index
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -18,22 +18,22 @@ class Sidebar(QWidget):
         self.buttons = []
 
         # Icons and their corresponding page indices
-        top_buttons = [
-            (QStyle.StandardPixmap.SP_DirIcon, 0),                  # Documents
-            (QStyle.StandardPixmap.SP_FileDialogDetailedView, 1),   # Themes
+        self.top_buttons = [
+            (QStyle.StandardPixmap.SP_DirIcon, "Docs"),                  # Documents
+            (QStyle.StandardPixmap.SP_FileDialogDetailedView, "Themes"),   # Themes
         ]
-        bottom_buttons = [
-            (QStyle.StandardPixmap.SP_FileDialogInfoView, 2),  # Project
-            (QStyle.StandardPixmap.SP_FileDialogListView, 3),  # Settings
+        self.bottom_buttons = [
+            (QStyle.StandardPixmap.SP_FileDialogInfoView, "Project"),  # Project
+            (QStyle.StandardPixmap.SP_FileDialogListView, "Settings"),  # Settings
         ]
 
         # Add top and bottom buttons
-        for icon, index in top_buttons:
-            btn = self._make_button(style, icon, index)
+        for icon, page in self.top_buttons:
+            btn = self._make_button(style, icon, page)
             layout.addWidget(btn)
         layout.addStretch()
-        for icon, index in bottom_buttons:
-            btn = self._make_button(style, icon, index)
+        for icon, page in self.bottom_buttons:
+            btn = self._make_button(style, icon, page)
             layout.addWidget(btn)
 
         self.setAttribute(Qt.WA_StyledBackground, True)
@@ -56,16 +56,24 @@ class Sidebar(QWidget):
                             }
                             """)
 
-    def _make_button(self, style, icon, index):
+    def _make_button(self, style, icon, page):
         btn = QPushButton()
         btn.setIcon(style.standardIcon(icon))
         btn.setIconSize(QSize(24, 24))
         btn.setMinimumHeight(48)
         btn.setCheckable(True)
-        btn.clicked.connect(lambda: self.page_selected.emit(index))
+        btn.clicked.connect(lambda: self.page_selected.emit(page))
         self.buttons.append(btn)
         return btn
-
-    def set_active(self, index: int):
-        for i, btn in enumerate(self.buttons):
-            btn.setChecked(i == index)
+    
+    def set_active(self, page: str):
+        for i in range(len(self.top_buttons)):
+            if self.top_buttons[i][1] == page:
+                self.buttons[i].setChecked(True)
+            else:
+                self.buttons[i].setChecked(False)
+        for i in range(len(self.bottom_buttons)):
+            if self.bottom_buttons[i][1] == page:
+                self.buttons[i+len(self.top_buttons)].setChecked(True)
+            else:
+                self.buttons[i+len(self.top_buttons)].setChecked(False)

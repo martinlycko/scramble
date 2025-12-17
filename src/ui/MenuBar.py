@@ -10,6 +10,12 @@ class AppMenuBar(QMenuBar):
         # File menu
         file_menu = self.addMenu("File")
 
+        project_action = QAction("Project", self)
+        project_action.triggered.connect(lambda: self.parent().show_page("Project"))
+        file_menu.addAction(project_action)
+
+        file_menu.addSeparator()
+
         # Open action
         open_action = QAction(style.standardIcon(QStyle.SP_DialogOpenButton), "Open", self)
         open_action.setShortcut("Ctrl+O")
@@ -27,6 +33,12 @@ class AppMenuBar(QMenuBar):
         save_as_action.setShortcut("Ctrl+Shift+S")
         save_as_action.triggered.connect(self.save_as_file)
         file_menu.addAction(save_as_action)
+
+        file_menu.addSeparator()
+
+        settings_action = QAction("Settings", self)
+        settings_action.triggered.connect(lambda: self.parent().show_page("Settings"))
+        file_menu.addAction(settings_action)
 
         self.setStyleSheet("""
                                 QMenuBar {
