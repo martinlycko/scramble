@@ -3,8 +3,8 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QStackedWidget
 from PySide6.QtCore import Qt
 
-from Sidebar import Sidebar
-from MenuBar import AppMenuBar
+from Components.Sidebar import Sidebar
+from Components.MenuBar import AppMenuBar
 
 from Pages import (
     DocumentsPage,

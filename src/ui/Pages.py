@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QPushButton, QListWidget
-from PySide6.QtCore import Qt
 
-from DocumentView import DocumentViewerPage
+from Views.DocumentView import DocumentViewerPage
 
 
 class BasePage(QWidget):
@@ -12,6 +11,7 @@ class BasePage(QWidget):
 
         title_label = QLabel(title)
         title_label.setStyleSheet("font-size: 24px;")
+        title_label.setFixedHeight(28)
 
         self.main_layout.addWidget(title_label)
 
