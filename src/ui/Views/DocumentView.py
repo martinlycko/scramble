@@ -8,14 +8,29 @@ from PySide6.QtWidgets import (
     QSplitter,
     QTabWidget,
     QVBoxLayout,
-    QPushButton
+    QPushButton,
+    QTreeView,
+    QLabel,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QModelIndex
+
+from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 
 class DocumentViewerPage(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # tbc
+        mainlayout = QVBoxLayout(self)
+        mainlayout.setContentsMargins(0, 0, 0, 0)
+        
+        # tbc
+        self.title_label = QLabel("Documents")
+        self.title_label.setStyleSheet("font-size: 24px;")
+        self.title_label.setFixedHeight(28)
+
+        mainlayout.addWidget(self.title_label)
 
         # Main layout for the page
         layout = QHBoxLayout(self)
@@ -30,22 +45,33 @@ class DocumentViewerPage(QWidget):
         self.left_layout = QVBoxLayout(self.left_container)
         self.left_layout.setContentsMargins(0, 0, 0, 0)
 
-        self.document_list = QListWidget()
-        self.document_list.addItems([
-            "Document A",
-            "Document B",
-            "Document C"
-        ])
-        self.left_layout.addWidget(self.document_list, stretch=1)
+        tree = QTreeView()
+        self.model = QStandardItemModel()
+
+        root = self.model.invisibleRootItem()
+        parent = QStandardItem("Parent")
+        parent.setData(1, Qt.UserRole)
+        parent.setFlags(parent.flags() & ~Qt.ItemIsSelectable)
+        child = QStandardItem("Child")
+        child.setData(2, Qt.UserRole)
+        parent.appendRow(child)
+        root.appendRow(parent)
+
+        tree.setModel(self.model)
+        tree.setHeaderHidden(True)
+        tree.expandAll()
+        tree.show()
+        self.left_layout.addWidget(tree, stretch=1)
         
-        # --- Add Button On Bottom
+        # --- Add and Manage Docs Button On Bottom
         self.add_document = QPushButton("Add Document")
         self.left_layout.addWidget(self.add_document)
+        self.manage_document = QPushButton("Manage Document")
+        self.left_layout.addWidget(self.manage_document)
 
         splitter.addWidget(self.left_container)
-        
 
-        # --- Center Column (50%) ---
+        # --- Right Column (75%) ---
         self.document_text = QTextEdit()
         self.document_text.setReadOnly(True)
         self.document_text.setPlaceholderText(
@@ -60,21 +86,32 @@ class DocumentViewerPage(QWidget):
         # Themes tab
         actions_tab = QWidget()
         actions_layout = QVBoxLayout(actions_tab)
-        actions_layout.setContentsMargins(8, 8, 8, 8)
-        actions_layout.setSpacing(6)
-        self.action_open = QPushButton("Open")
-        self.action_export = QPushButton("Export")
-        self.action_archive = QPushButton("Archive")
-        self.action_delete = QPushButton("Delete")
+        actions_layout.setContentsMargins(0, 0, 0, 0)
+        actions_layout.setSpacing(0)
 
-        for btn in (
-            self.action_open,
-            self.action_export,
-            self.action_archive,
-            self.action_delete,
-        ):
-            actions_layout.addWidget(btn)
-        actions_layout.addStretch()  # Push buttons to top
+        theme_tree = QTreeView()
+        self.theme_model = QStandardItemModel()
+
+        theme_root = self.theme_model.invisibleRootItem()
+        theme_parent = QStandardItem("Parent")
+        theme_parent.setData(1, Qt.UserRole)
+        theme_child = QStandardItem("Child")
+        theme_child.setData(2, Qt.UserRole)
+        theme_parent.appendRow(theme_child)
+        theme_root.appendRow(theme_parent)
+
+        theme_tree.setModel(self.theme_model)
+        theme_tree.setHeaderHidden(True)
+        theme_tree.expandAll()
+        theme_tree.show()
+        self.left_layout.addWidget(theme_tree, stretch=1)
+        actions_layout.addWidget(theme_tree)
+
+        self.add_themes = QPushButton("Add Attributes")
+        actions_layout.addWidget(self.add_themes)
+
+        self.manage_themes = QPushButton("Manage Attributes")
+        actions_layout.addWidget(self.manage_themes)
 
         self.tabs.addTab(actions_tab, "Themes")
 
@@ -92,8 +129,8 @@ class DocumentViewerPage(QWidget):
         self.save_attributes = QPushButton("Save Attributes")
         attributes_layout.addWidget(self.save_attributes)
 
-        self.edit_attributes = QPushButton("Edit Attributes")
-        attributes_layout.addWidget(self.edit_attributes)
+        self.manage_attributes = QPushButton("Manage Attributes")
+        attributes_layout.addWidget(self.manage_attributes)
 
         self.tabs.addTab(attributes_tab, "Attributes")
 
@@ -105,6 +142,9 @@ class DocumentViewerPage(QWidget):
         notes_layout = QVBoxLayout(notes_tab)
         notes_layout.addWidget(self.notes_editor)
 
+        self.save_notes = QPushButton("Save Notes")
+        notes_layout.addWidget(self.save_notes)
+
         self.tabs.addTab(notes_tab, "Notes")
 
         # Initial proportions
@@ -112,10 +152,26 @@ class DocumentViewerPage(QWidget):
 
         layout.addWidget(splitter)
 
+        mainlayout.addLayout(layout)
+
         # Connections
-        self.document_list.currentTextChanged.connect(self.load_document)
+        # self.document_list.currentTextChanged.connect(self.load_document)
+        tree.selectionModel().selectionChanged.connect(self.on_selection_changed)
+
+    def on_selection_changed(self, selected, deselected):
+        indexes = selected.indexes()
+        if not indexes:
+            return
+
+        index = indexes[0]
+        item = self.model.itemFromIndex(index)
+
+        self.load_document(item.text())
+
 
     def load_document(self, title: str):
+        self.title_label.setText(title)
+        
         self.document_text.setPlainText(
             f"This is the full text of {title}.\n\nLorem ipsum dolor sit amet..."
         )
