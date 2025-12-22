@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget,
     QHBoxLayout,
-    QListWidget,
     QTextEdit,
     QTableWidget,
     QTableWidgetItem,
@@ -12,12 +11,12 @@ from PySide6.QtWidgets import (
     QTreeView,
     QLabel,
 )
-from PySide6.QtCore import Qt, QModelIndex
+from PySide6.QtCore import Qt
 
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 
 
-class DocumentViewerPage(QWidget):
+class DocumentsViewerPage(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 

@@ -3,44 +3,60 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QStackedWidget
 from PySide6.QtCore import Qt
 
+# Import top level components
 from Components.Sidebar import Sidebar
 from Components.MenuBar import AppMenuBar
 
-from Pages import (
-    DocumentsPage,
-    ThemesPage,
-    ProjectPage,
-    SettingsPage,
-)
+# Import individual pages
+from DocumentsView._page import DocumentsPage
+from ThemesView._page import ThemesPage
+from ProjectView._page import ProjectPage
+from SettingsView._page import SettingsPage
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
+        
+        # Initialize the main window
         super().__init__()
         self.resize(900, 600)
-
         central = QWidget()
         self.setCentralWidget(central)
-        
-        self.menu_bar = AppMenuBar(self)
-        self.setMenuBar(self.menu_bar)
 
+        # Set up the main layout
         layout = QHBoxLayout(central)
         layout.setContentsMargins(0, 0, 0, 0)
 
+        # Create widgets and pages 
+        self.create_menu_bar()
+        self.create_side_bar()
+        self.create_pages()
+        layout.addWidget(self.sidebar)
+        layout.addWidget(self.pages)
+
+    def create_menu_bar(self):
+        menu_bar = AppMenuBar(self)
+        self.setMenuBar(menu_bar)
+
+    def create_side_bar(self):
         self.sidebar = Sidebar()
+
+    def create_pages(self):
         self.pages = QStackedWidget()
 
+        # Create individual pages
         self.DocumentsPage = DocumentsPage()
         self.ThemesPage = ThemesPage()
         self.ProjectPage = ProjectPage()
         self.SettingsPage = SettingsPage()
 
+        # Add pages to the stacked widget
         self.pages.addWidget(self.DocumentsPage)
         self.pages.addWidget(self.ThemesPage)
         self.pages.addWidget(self.ProjectPage)
         self.pages.addWidget(self.SettingsPage)
 
+        # Map page names to widgets for easy access
         self.pages_map = {
             "Docs": self.DocumentsPage,
             "Themes": self.ThemesPage,
@@ -48,20 +64,16 @@ class MainWindow(QMainWindow):
             "Settings": self.SettingsPage,
         }
 
-        self._connect_sidebar()
-
-        layout.addWidget(self.sidebar)
-        layout.addWidget(self.pages)
-
-    def show_page(self, name: str):
-        self.pages.setCurrentWidget(self.pages_map[name])
-        self.sidebar.set_active(name)
-
-    def _connect_sidebar(self):
+        # Connect sidebar buttons to page display functions
         self.sidebar.buttons[0].clicked.connect(lambda: self.show_page("Docs"))
         self.sidebar.buttons[1].clicked.connect(lambda: self.show_page("Themes"))
         self.sidebar.buttons[2].clicked.connect(lambda: self.show_page("Project"))
         self.sidebar.buttons[3].clicked.connect(lambda: self.show_page("Settings"))
+
+    def show_page(self, name: str):
+        # Display the selected page and update sidebar state using page name
+        self.pages.setCurrentWidget(self.pages_map[name])
+        self.sidebar.set_active(name)
 
 
 if __name__ == "__main__":
