@@ -4,42 +4,15 @@ from PySide6.QtGui import QAction
 
 class AppMenuBar(QMenuBar):
     def __init__(self, parent=None):
+        
+        # Initialize the menu bar
         super().__init__(parent)
-        style = self.style()
+        self.style = self.style()
 
-        # File menu
-        file_menu = self.addMenu("File")
+        # Create menu items
+        self.create_file_menu()
 
-        project_action = QAction("Project", self)
-        project_action.triggered.connect(lambda: self.parent().show_page("Project"))
-        file_menu.addAction(project_action)
-
-        file_menu.addSeparator()
-
-        # Open action
-        open_action = QAction(style.standardIcon(QStyle.SP_DialogOpenButton), "Open", self)
-        open_action.setShortcut("Ctrl+O")
-        open_action.triggered.connect(self.open_file)
-        file_menu.addAction(open_action)
-
-        # Save action
-        save_action = QAction(style.standardIcon(QStyle.SP_DialogSaveButton), "Save", self)
-        save_action.setShortcut("Ctrl+S")
-        save_action.triggered.connect(self.save_file)
-        file_menu.addAction(save_action)
-
-        # Save-As action
-        save_as_action = QAction(style.standardIcon(QStyle.SP_DialogSaveButton), "Save As", self)
-        save_as_action.setShortcut("Ctrl+Shift+S")
-        save_as_action.triggered.connect(self.save_as_file)
-        file_menu.addAction(save_as_action)
-
-        file_menu.addSeparator()
-
-        settings_action = QAction("Settings", self)
-        settings_action.triggered.connect(lambda: self.parent().show_page("Settings"))
-        file_menu.addAction(settings_action)
-
+        # Apply styling for the menu bar
         self.setStyleSheet("""
                                 QMenuBar {
                                     background-color: #2b2b2b;
@@ -70,7 +43,47 @@ class AppMenuBar(QMenuBar):
                                 }
                                 """)
 
+    def create_file_menu(self):
+        # Create file menu
+        file_menu = self.addMenu("File")
+
+        # Item navigating to project page
+        project_action = QAction("Project", self)
+        project_action.triggered.connect(lambda: self.parent().show_page("Project"))
+        file_menu.addAction(project_action)
+
+        # Menu seperator
+        file_menu.addSeparator()
+
+        # File open action
+        open_action = QAction(self.style.standardIcon(QStyle.SP_DialogOpenButton), "Open", self)
+        open_action.setShortcut("Ctrl+O")
+        open_action.triggered.connect(self.open_file)
+        file_menu.addAction(open_action)
+
+        # File save action
+        save_action = QAction(self.style.standardIcon(QStyle.SP_DialogSaveButton), "Save", self)
+        save_action.setShortcut("Ctrl+S")
+        save_action.triggered.connect(self.save_file)
+        file_menu.addAction(save_action)
+
+        # File save-as action
+        save_as_action = QAction(self.style.standardIcon(QStyle.SP_DialogSaveButton), "Save As", self)
+        save_as_action.setShortcut("Ctrl+Shift+S")
+        save_as_action.triggered.connect(self.save_as_file)
+        file_menu.addAction(save_as_action)
+
+        # Menu separator
+        file_menu.addSeparator()
+
+        # Item navigator to settings page
+        settings_action = QAction("Settings", self)
+        settings_action.triggered.connect(lambda: self.parent().show_page("Settings"))
+        file_menu.addAction(settings_action)
+
+    
     def open_file(self):
+        # Action to open a new project file
         file_name, _ = QFileDialog.getOpenFileName(
             self, "Open File", "", "All Files (*)"
         )
@@ -78,6 +91,7 @@ class AppMenuBar(QMenuBar):
             QMessageBox.information(self, "Open", f"Opened:\n{file_name}")
 
     def save_as_file(self):
+        # Action to save the current project as a new file
         file_name, _ = QFileDialog.getSaveFileName(
             self, "Save File", "", "All Files (*)"
         )
@@ -85,6 +99,7 @@ class AppMenuBar(QMenuBar):
             QMessageBox.information(self, "Save", f"Saved:\n{file_name}")
 
     def save_file(self):
+        # Action to save the current project file
         file_name, _ = QFileDialog.getSaveFileName(
             self, "Save File", "", "All Files (*)"
         )
