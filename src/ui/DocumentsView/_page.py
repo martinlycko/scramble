@@ -1,7 +1,7 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSplitter
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSplitter
 from PySide6.QtCore import Qt
 
-# from .DocumentView import DocumentsViewerPage
+from DocumentsView.DocumentTitle import DocumentTitle
 from DocumentsView.DocumentSelector import DocumentSelector
 from DocumentsView.DocumentFrame import DocumentFrame
 from DocumentsView.DocumentTabs import DocumentTabs
@@ -16,7 +16,9 @@ class DocumentsPage(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 4)
 
         # Add title bar
-        self.create_title_bar()
+        self.title = DocumentTitle()
+        self.title.setFixedHeight(40)
+        self.main_layout.addWidget(self.title)
 
         # Add split layout and components
         self.split_layout = QHBoxLayout(self)
@@ -37,11 +39,3 @@ class DocumentsPage(QWidget):
         self.split_layout.addWidget(splitter)
 
         self.main_layout.addLayout(self.split_layout)
-        
-
-    def create_title_bar(self):
-        self.title_label = QLabel("Documents")
-        self.title_label.setStyleSheet("font-size: 24px;")
-        self.title_label.setFixedHeight(28)
-
-        self.main_layout.addWidget(self.title_label)

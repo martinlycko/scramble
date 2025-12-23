@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSplitter, QTreeView, QPushButton
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QTreeView, QPushButton
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6.QtCore import Qt
 

@@ -1,5 +1,4 @@
-from PySide6.QtWidgets import QWidget, QTextEdit, QHBoxLayout, QSplitter, QVBoxLayout
-from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QWidget, QTextEdit, QVBoxLayout
 from PySide6.QtCore import Qt
 
 
