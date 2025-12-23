@@ -13,8 +13,7 @@ class DocumentsPage(QWidget):
         # Initialise main page
         super().__init__(parent)
         self.main_layout = QVBoxLayout(self)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        #self.main_layout.addWidget(DocumentsViewerPage())
+        self.main_layout.setContentsMargins(0, 0, 0, 4)
 
         # Add title bar
         self.create_title_bar()
@@ -25,7 +24,7 @@ class DocumentsPage(QWidget):
         splitter = QSplitter(Qt.Horizontal, self)
 
         self.documents = DocumentSelector()
-        splitter.addWidget(self.documents.left_container)
+        splitter.addWidget(self.documents)
 
         self.docFrame = DocumentFrame()
         splitter.addWidget(self.docFrame)
