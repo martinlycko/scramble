@@ -11,6 +11,7 @@ class AppMenuBar(QMenuBar):
 
         # Create menu items
         self.create_file_menu()
+        self.create_data_menu()
 
         # Apply styling for the menu bar
         self.setStyleSheet("""
@@ -81,6 +82,33 @@ class AppMenuBar(QMenuBar):
         settings_action.triggered.connect(lambda: self.parent().show_page("Settings"))
         file_menu.addAction(settings_action)
 
+    def create_data_menu(self):
+        # Create data menu
+        data_menu = self.addMenu("Data")
+
+        # Item navigating to documents page
+        docs_action = QAction("Documents", self)
+        docs_action.triggered.connect(lambda: self.parent().show_page("Docs"))
+        data_menu.addAction(docs_action)
+
+        # Item navigating to add document page
+        docs_action = QAction("Add Document", self)
+        docs_action.triggered.connect(lambda: self.parent().show_page("AddDoc"))
+        data_menu.addAction(docs_action)
+
+        # Menu separator
+        data_menu.addSeparator()
+
+        # Item navigating to themes page
+        themes_action = QAction("Themes", self)
+        themes_action.triggered.connect(lambda: self.parent().show_page("Themes"))
+        data_menu.addAction(themes_action)#
+
+        # Item triggering add theme dialogue
+        add_theme = QAction("Add Theme", self)
+        add_theme.triggered.connect(self.add_theme_dialogue)
+        data_menu.addAction(add_theme)
+
     
     def open_file(self):
         # Action to open a new project file
@@ -105,3 +133,6 @@ class AppMenuBar(QMenuBar):
         )
         if file_name:
             QMessageBox.information(self, "Save", f"Saved:\n{file_name}")
+
+    def add_theme_dialogue(self):
+        pass
