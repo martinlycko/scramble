@@ -3,9 +3,7 @@ from PySide6.QtCore import Qt
 
 
 class DocumentFrame(QWidget):
-    def __init__(self, parent=None, project=None):
-
-        self.project = project
+    def __init__(self, parent=None):
         
         # Initialise main selector
         super().__init__(parent)
@@ -19,3 +17,6 @@ class DocumentFrame(QWidget):
             "Select a document from the left to view its contents."
         )
         self.main_layout.addWidget(self.document_text)
+
+    def update(self, DocText):
+        self.document_text.setPlainText(DocText)

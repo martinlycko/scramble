@@ -19,22 +19,22 @@ class DocumentsPage(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 4)
 
         # Add title bar
-        self.title = DocumentTitle(project=self.project)
+        self.title = DocumentTitle()
         self.title.setFixedHeight(40)
         self.main_layout.addWidget(self.title)
 
         # Add split layout and components
-        self.split_layout = QHBoxLayout(self)
+        self.split_layout = QHBoxLayout()
         self.split_layout.setContentsMargins(0, 0, 0, 0)
         splitter = QSplitter(Qt.Horizontal, self)
 
-        self.documents = DocumentSelector(self, self.project)
+        self.documents = DocumentSelector(self, self.project.documents.list)
         splitter.addWidget(self.documents)
 
-        self.docFrame = DocumentFrame(project=self.project)
+        self.docFrame = DocumentFrame()
         splitter.addWidget(self.docFrame)
 
-        self.docTabs = DocumentTabs(project=self.project)
+        self.docTabs = DocumentTabs()
         splitter.addWidget(self.docTabs)
 
         # Initial proportions
@@ -44,4 +44,7 @@ class DocumentsPage(QWidget):
         self.main_layout.addLayout(self.split_layout)
 
     def refresh_page(self):
-        self.title.update(self.openDoc)
+        document = self.project.documents.get_document(self.openDoc)
+        self.title.update(document.title)
+        self.docFrame.update(document.content)
+        self.docTabs.update(None, document.notes, document.attributes)

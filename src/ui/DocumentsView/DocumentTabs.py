@@ -1,12 +1,10 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QTreeView, QPushButton, QTabWidget, QTableWidget, QTextEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QTreeView, QPushButton, QTabWidget, QTableWidget, QTextEdit, QTableWidgetItem, QHeaderView
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6.QtCore import Qt
 
 
 class DocumentTabs(QWidget):
-    def __init__(self, parent=None, project=None):
-
-        self.project = project
+    def __init__(self, parent=None):
         
         # Initialise main selector
         super().__init__(parent)
@@ -61,7 +59,9 @@ class DocumentTabs(QWidget):
         self.attributes_table.setHorizontalHeaderLabels(
             ["Attribute", "Value"]
         )
-        self.attributes_table.horizontalHeader().setStretchLastSection(True)
+        self.attributes_table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.Stretch
+        )
 
         # Create tab layout
         attributes_tab = QWidget()
@@ -93,3 +93,17 @@ class DocumentTabs(QWidget):
 
         # Add the notes tab to the main tabs
         self.tabs.addTab(notes_tab, "Notes")
+
+    def update(self, Themes, Notes, Attributes):
+        # Update themes tab - tbc
+
+        # Update attribute tab
+        self.attributes_table.setRowCount(0)
+        for attr, value in Attributes.items():
+            row = self.attributes_table.rowCount()
+            self.attributes_table.insertRow(row)
+            self.attributes_table.setItem(row, 0, QTableWidgetItem(attr))
+            self.attributes_table.setItem(row, 1, QTableWidgetItem(value))
+
+        # Update notes tab
+        self.notes_editor.setText(Notes)

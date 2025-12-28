@@ -6,8 +6,8 @@ class DocumentList():
         self.id = 0
         self.list = []
 
-    def add_document(self, title, content):
-        new_document = Document(self.id, title, content)
+    def add_document(self, title, content, notes, attributes):
+        new_document = Document(self.id, title, content, notes, attributes)
         self.list.append(new_document)
         self.id += 1
         print(f"Document '{title}' added with ID {new_document.id}.")

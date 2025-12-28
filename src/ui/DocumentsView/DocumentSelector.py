@@ -4,13 +4,12 @@ from PySide6.QtCore import Qt
 
 
 class DocumentSelector(QWidget):
-    def __init__(self, parent=None, project=None):
+    def __init__(self, parent=None, documents=None):
 
         self.uiparent = parent
-        self.project = project
 
         # Initialise main selector
-        super().__init__(self.uiparent)
+        super().__init__(parent)
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
 
@@ -28,7 +27,7 @@ class DocumentSelector(QWidget):
         # parent.appendRow(child)
         # root.appendRow(parent)
         root = self.model.invisibleRootItem()
-        for doc in project.documents.list:
+        for doc in documents:
             item = QStandardItem(doc.title)
             item.setData(doc.id, Qt.UserRole)
             root.appendRow(item)
@@ -57,4 +56,3 @@ class DocumentSelector(QWidget):
 
         self.uiparent.openDoc = item_id
         self.uiparent.refresh_page()
-        print("Selected ID:", self.openDoc)

@@ -2,9 +2,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout
 
 
 class DocumentTitle(QWidget):
-    def __init__(self, parent=None, project=None):
-        
-        self.project = project
+    def __init__(self, parent=None):
 
         # Initialise main selector
         super().__init__(parent)
@@ -17,5 +15,5 @@ class DocumentTitle(QWidget):
 
         self.main_layout.addWidget(self.title_label)
 
-    def update(self, openDoc):
-        self.title_label.setText(self.project.documents.get_document(openDoc).title)
+    def update(self, DocTitle):
+        self.title_label.setText(DocTitle)
