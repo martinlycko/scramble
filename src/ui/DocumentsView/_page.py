@@ -1,14 +1,17 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QSplitter
 from PySide6.QtCore import Qt
 
-from DocumentsView.DocumentTitle import DocumentTitle
-from DocumentsView.DocumentSelector import DocumentSelector
-from DocumentsView.DocumentFrame import DocumentFrame
-from DocumentsView.DocumentTabs import DocumentTabs
+from src.ui.DocumentsView.DocumentTitle import DocumentTitle
+from src.ui.DocumentsView.DocumentSelector import DocumentSelector
+from src.ui.DocumentsView.DocumentFrame import DocumentFrame
+from src.ui.DocumentsView.DocumentTabs import DocumentTabs
 
 
 class DocumentsPage(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, project=None):
+
+        self.project = project
+        self.openDoc = -1
         
         # Initialise main page
         super().__init__(parent)
@@ -16,7 +19,7 @@ class DocumentsPage(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 4)
 
         # Add title bar
-        self.title = DocumentTitle()
+        self.title = DocumentTitle(project=self.project)
         self.title.setFixedHeight(40)
         self.main_layout.addWidget(self.title)
 
@@ -25,13 +28,13 @@ class DocumentsPage(QWidget):
         self.split_layout.setContentsMargins(0, 0, 0, 0)
         splitter = QSplitter(Qt.Horizontal, self)
 
-        self.documents = DocumentSelector()
+        self.documents = DocumentSelector(self, self.project)
         splitter.addWidget(self.documents)
 
-        self.docFrame = DocumentFrame()
+        self.docFrame = DocumentFrame(project=self.project)
         splitter.addWidget(self.docFrame)
 
-        self.docTabs = DocumentTabs()
+        self.docTabs = DocumentTabs(project=self.project)
         splitter.addWidget(self.docTabs)
 
         # Initial proportions
@@ -39,3 +42,6 @@ class DocumentsPage(QWidget):
         self.split_layout.addWidget(splitter)
 
         self.main_layout.addLayout(self.split_layout)
+
+    def refresh_page(self):
+        self.title.update(self.openDoc)

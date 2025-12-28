@@ -4,24 +4,27 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, Q
 from PySide6.QtCore import Qt
 
 # Import top level components
-from Components.Sidebar import Sidebar
-from Components.MenuBar import AppMenuBar
+from src.ui.Components.Sidebar import Sidebar
+from src.ui.Components.MenuBar import AppMenuBar
 
 # Import individual pages
-from DocumentsView._page import DocumentsPage
-from ThemesView._page import ThemesPage
-from ProjectView._page import ProjectPage
-from SettingsView._page import SettingsPage
+from src.ui.DocumentsView._page import DocumentsPage
+from src.ui.ThemesView._page import ThemesPage
+from src.ui.ProjectView._page import ProjectPage
+from src.ui.SettingsView._page import SettingsPage
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, project):
         
         # Initialize the main window
         super().__init__()
         self.resize(900, 600)
         central = QWidget()
         self.setCentralWidget(central)
+
+        # Store reference to project
+        self.project = project
 
         # Set up the main layout
         layout = QHBoxLayout(central)
@@ -45,7 +48,7 @@ class MainWindow(QMainWindow):
         self.pages = QStackedWidget()
 
         # Create individual pages
-        self.DocumentsPage = DocumentsPage()
+        self.DocumentsPage = DocumentsPage(project=self.project)
         self.ThemesPage = ThemesPage()
         self.ProjectPage = ProjectPage()
         self.SettingsPage = SettingsPage()

@@ -2,8 +2,10 @@ from PySide6.QtWidgets import QWidget, QLabel, QHBoxLayout
 
 
 class DocumentTitle(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, project=None):
         
+        self.project = project
+
         # Initialise main selector
         super().__init__(parent)
         self.main_layout = QHBoxLayout(self)
@@ -14,3 +16,6 @@ class DocumentTitle(QWidget):
         self.title_label.setStyleSheet("font-size: 24px;")
 
         self.main_layout.addWidget(self.title_label)
+
+    def update(self, openDoc):
+        self.title_label.setText(self.project.documents.get_document(openDoc).title)

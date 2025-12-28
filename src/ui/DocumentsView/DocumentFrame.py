@@ -3,7 +3,9 @@ from PySide6.QtCore import Qt
 
 
 class DocumentFrame(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, project=None):
+
+        self.project = project
         
         # Initialise main selector
         super().__init__(parent)
