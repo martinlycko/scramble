@@ -9,6 +9,7 @@ from src.ui.Components.MenuBar import AppMenuBar
 
 # Import individual pages
 from src.ui.DocumentsView._page import DocumentsPage
+from src.ui.AddDocumentView._page import AddDocumentPage
 from src.ui.ThemesView._page import ThemesPage
 from src.ui.ProjectView._page import ProjectPage
 from src.ui.SettingsView._page import SettingsPage
@@ -49,12 +50,14 @@ class MainWindow(QMainWindow):
 
         # Create individual pages
         self.DocumentsPage = DocumentsPage(project=self.project)
+        self.AddDocumentsPage = AddDocumentPage(parent=self, project=self.project)
         self.ThemesPage = ThemesPage()
         self.ProjectPage = ProjectPage()
         self.SettingsPage = SettingsPage()
 
         # Add pages to the stacked widget
         self.pages.addWidget(self.DocumentsPage)
+        self.pages.addWidget(self.AddDocumentsPage)
         self.pages.addWidget(self.ThemesPage)
         self.pages.addWidget(self.ProjectPage)
         self.pages.addWidget(self.SettingsPage)
@@ -65,6 +68,7 @@ class MainWindow(QMainWindow):
             "Themes": self.ThemesPage,
             "Project": self.ProjectPage,
             "Settings": self.SettingsPage,
+            "AddDoc": self.AddDocumentsPage,
         }
 
         # Connect sidebar buttons to page display functions
