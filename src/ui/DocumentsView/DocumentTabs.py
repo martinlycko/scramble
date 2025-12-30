@@ -1,11 +1,16 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QTreeView, QPushButton, QTabWidget, QTableWidget, QTextEdit, QTableWidgetItem, QHeaderView
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QTreeView, QPushButton, QTabWidget, QTableWidget, QTextEdit, QTableWidgetItem, QHeaderView, QDialog
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6.QtCore import Qt
 
+from src.ui.Components.AddAttributeDialog import AddAttributeDialog
+
 
 class DocumentTabs(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, project=None):
         
+        self.uiparent = parent
+        self.project = project
+
         # Initialise main selector
         super().__init__(parent)
         self.main_layout = QVBoxLayout(self)
@@ -68,6 +73,11 @@ class DocumentTabs(QWidget):
         attributes_layout = QVBoxLayout(attributes_tab)
         attributes_layout.addWidget(self.attributes_table)
 
+        # Buttons for adding attributes
+        self.add_attributes = QPushButton("Add Attribute")
+        self.add_attributes.clicked.connect(self.add_attribute)
+        attributes_layout.addWidget(self.add_attributes)
+
         # Buttons for saving and managing attributes
         self.save_attributes = QPushButton("Save Attributes")
         attributes_layout.addWidget(self.save_attributes)
@@ -107,3 +117,10 @@ class DocumentTabs(QWidget):
 
         # Update notes tab
         self.notes_editor.setText(Notes)
+
+    def add_attribute(self):
+        dialog = AddAttributeDialog(project=self.project)
+        if dialog.exec() == QDialog.Accepted:
+            value = dialog.edit.text()
+            print(value)
+        self.uiparent.refresh_page()

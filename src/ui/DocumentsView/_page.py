@@ -34,7 +34,7 @@ class DocumentsPage(QWidget):
         self.docFrame = DocumentFrame()
         splitter.addWidget(self.docFrame)
 
-        self.docTabs = DocumentTabs()
+        self.docTabs = DocumentTabs(parent=self, project=self.project)
         splitter.addWidget(self.docTabs)
 
         # Initial proportions

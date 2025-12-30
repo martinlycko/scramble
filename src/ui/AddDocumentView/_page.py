@@ -29,7 +29,7 @@ class AddDocumentPage(QWidget):
         self.docFrame = DocumentText()
         splitter.addWidget(self.docFrame)
 
-        self.docTabs = DocumentTabs(project=self.project)
+        self.docTabs = DocumentTabs(parent=self, project=self.project)
         splitter.addWidget(self.docTabs)
 
         # Initial proportions
@@ -37,6 +37,10 @@ class AddDocumentPage(QWidget):
         self.split_layout.addWidget(splitter)
 
         self.main_layout.addLayout(self.split_layout)
+
+    def refresh_page(self):
+        attributes = self.project.attributes.list
+        self.docTabs.update(attributes)
 
     def discard(self):
         self.title.title_input.setText("")

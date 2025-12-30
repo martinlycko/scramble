@@ -9,6 +9,7 @@ class DocumentTabs(QWidget):
     def __init__(self, parent=None, project=None):
 
         self.project = project
+        self.uiparent = parent
         
         # Initialise main selector
         super().__init__(parent)
@@ -39,10 +40,10 @@ class DocumentTabs(QWidget):
         # Add the attributes tab to the main tabs
         self.tabs.addTab(attributes_tab, "Attributes")
 
-        # Buttons for saving and managing attributes
-        self.save_attributes = QPushButton("Add Attribute")
-        self.save_attributes.clicked.connect(self.add_attribute)
-        attributes_layout.addWidget(self.save_attributes)
+        # Buttons for adding attributes
+        self.add_attributes = QPushButton("Add Attribute")
+        self.add_attributes.clicked.connect(self.add_attribute)
+        attributes_layout.addWidget(self.add_attributes)
 
     def create_notes_tab(self):
         # Tab for notes regarding the document
@@ -62,3 +63,13 @@ class DocumentTabs(QWidget):
         if dialog.exec() == QDialog.Accepted:
             value = dialog.edit.text()
             print(value)
+        self.uiparent.refresh_page()
+
+    def update(self, Attributes):
+        # Update attribute tab
+        self.attributes_table.setRowCount(0)
+        for attr in Attributes:
+            row = self.attributes_table.rowCount()
+            self.attributes_table.insertRow(row)
+            self.attributes_table.setItem(row, 0, QTableWidgetItem(attr))
+            self.attributes_table.setItem(row, 1, QTableWidgetItem(None))
