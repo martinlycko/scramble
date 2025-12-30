@@ -107,6 +107,8 @@ class DocumentTabs(QWidget):
     def update(self, Themes, Notes, Attributes):
         # Update themes tab - tbc
 
+        # TODO - Ensure already changed attribute values are maintained
+
         # Update attribute tab
         self.attributes_table.setRowCount(0)
         for attr, value in Attributes.items():
@@ -114,6 +116,12 @@ class DocumentTabs(QWidget):
             self.attributes_table.insertRow(row)
             self.attributes_table.setItem(row, 0, QTableWidgetItem(attr))
             self.attributes_table.setItem(row, 1, QTableWidgetItem(value))
+
+        # Disable editing the attribute name column
+        for row in range(self.attributes_table.rowCount()):
+            item = self.attributes_table.item(row, 0)
+            if item:
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
 
         # Update notes tab
         self.notes_editor.setText(Notes)

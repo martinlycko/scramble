@@ -32,6 +32,20 @@ class DocumentTabs(QWidget):
             QHeaderView.Stretch
         )
 
+        # Populate the table with row based on project attributes
+        self.attributes_table.setRowCount(0)
+        for attr in self.project.attributes.list:
+            row = self.attributes_table.rowCount()
+            self.attributes_table.insertRow(row)
+            self.attributes_table.setItem(row, 0, QTableWidgetItem(attr))
+            self.attributes_table.setItem(row, 1, QTableWidgetItem(None))
+
+        # Disable editing the attribute name column
+        for row in range(self.attributes_table.rowCount()):
+            item = self.attributes_table.item(row, 0)
+            if item:
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+
         # Create tab layout
         attributes_tab = QWidget()
         attributes_layout = QVBoxLayout(attributes_tab)
@@ -66,10 +80,18 @@ class DocumentTabs(QWidget):
         self.uiparent.refresh_page()
 
     def update(self, Attributes):
-        # Update attribute tab
+        #  TODO - make sure already entered attribute values are maintained
+
+        # Update attribute name column
         self.attributes_table.setRowCount(0)
         for attr in Attributes:
             row = self.attributes_table.rowCount()
             self.attributes_table.insertRow(row)
             self.attributes_table.setItem(row, 0, QTableWidgetItem(attr))
             self.attributes_table.setItem(row, 1, QTableWidgetItem(None))
+
+        # Disable editing the attribute name column
+        for row in range(self.attributes_table.rowCount()):
+            item = self.attributes_table.item(row, 0)
+            if item:
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
