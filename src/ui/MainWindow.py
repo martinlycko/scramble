@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.pages)
 
     def create_menu_bar(self):
-        menu_bar = AppMenuBar(self)
+        menu_bar = AppMenuBar(self, self.project)
         self.setMenuBar(menu_bar)
 
     def create_side_bar(self):
@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         self.pages = QStackedWidget()
 
         # Create individual pages
-        self.DocumentsPage = DocumentsPage(project=self.project)
+        self.DocumentsPage = DocumentsPage(parent=self, project=self.project)
         self.AddDocumentsPage = AddDocumentPage(parent=self, project=self.project)
         self.ThemesPage = ThemesPage()
         self.ProjectPage = ProjectPage()
@@ -81,6 +81,10 @@ class MainWindow(QMainWindow):
         # Display the selected page and update sidebar state using page name
         self.pages.setCurrentWidget(self.pages_map[name])
         self.sidebar.set_active(name)
+
+    def refresh_page(self):
+        self.DocumentsPage.refresh_page()
+        self.AddDocumentsPage.refresh_page()
 
 
 if __name__ == "__main__":

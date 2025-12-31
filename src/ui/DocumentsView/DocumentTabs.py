@@ -131,4 +131,4 @@ class DocumentTabs(QWidget):
         if dialog.exec() == QDialog.Accepted:
             value = dialog.edit.text()
             print(value)
-        self.uiparent.refresh_page()
+        self.uiparent.uiparent.refresh_page()

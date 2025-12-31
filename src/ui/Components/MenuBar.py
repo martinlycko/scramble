@@ -1,10 +1,14 @@
-from PySide6.QtWidgets import QMenuBar, QFileDialog, QMessageBox, QStyle
+from PySide6.QtWidgets import QMenuBar, QFileDialog, QMessageBox, QStyle, QDialog
 from PySide6.QtGui import QAction
 
+from src.ui.Components.AddAttributeDialog import AddAttributeDialog
 
 class AppMenuBar(QMenuBar):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, project=None):
         
+        self.uiparent = parent
+        self.project = project
+
         # Initialize the menu bar
         super().__init__(parent)
         self.style = self.style()
@@ -96,6 +100,11 @@ class AppMenuBar(QMenuBar):
         docs_action.triggered.connect(lambda: self.parent().show_page("AddDoc"))
         data_menu.addAction(docs_action)
 
+        # Item opening add attribute dialogue
+        add_attribute = QAction("Add Attribute", self)
+        add_attribute.triggered.connect(self.add_attribute_dialogue)
+        data_menu.addAction(add_attribute)
+
         # Menu separator
         data_menu.addSeparator()
 
@@ -136,3 +145,10 @@ class AppMenuBar(QMenuBar):
 
     def add_theme_dialogue(self):
         pass
+
+    def add_attribute_dialogue(self):
+        dialog = AddAttributeDialog(project=self.project)
+        if dialog.exec() == QDialog.Accepted:
+            value = dialog.edit.text()
+            print(value)
+        self.uiparent.refresh_page()

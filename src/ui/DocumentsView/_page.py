@@ -10,6 +10,7 @@ from src.ui.DocumentsView.DocumentTabs import DocumentTabs
 class DocumentsPage(QWidget):
     def __init__(self, parent=None, project=None):
 
+        self.uiparent = parent
         self.project = project
         self.openDoc = -1
         
