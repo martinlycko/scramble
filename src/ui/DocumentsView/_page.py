@@ -45,8 +45,9 @@ class DocumentsPage(QWidget):
         self.main_layout.addLayout(self.split_layout)
 
     def refresh_page(self):
-        document = self.project.documents.get_document(self.openDoc)
-        if document:
-            self.title.update(document.title)
-            self.docFrame.update(document.content)
-            self.docTabs.update(None, document.notes, document.attributes)
+        opendocument = self.project.documents.get_document(self.openDoc)
+        if opendocument:
+            self.documents.refresh_page(self.project.documents.list, self.openDoc)
+            self.title.update(opendocument.title)
+            self.docFrame.update(opendocument.content)
+            self.docTabs.update(None, opendocument.notes, opendocument.attributes)

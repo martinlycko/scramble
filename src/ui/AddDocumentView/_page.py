@@ -51,9 +51,13 @@ class AddDocumentPage(QWidget):
         self.uiparent.show_page("Docs")
     
     def save_doc(self):      
-        self.project.documents.add_document(
+        newdoc = self.project.documents.add_document(
             self.title.title_input.text(),
             self.docFrame.document_text.toPlainText(),
-            self.docTabs.notes_input.toPlainText(),
+            self.docTabs.notes_editor.toPlainText(),
             self.docTabs.get_attributes_dict()
         )
+        self.uiparent.DocumentsPage.openDoc = newdoc.id
+        self.discard()
+        self.uiparent.DocumentsPage.refresh_page()
+        self.uiparent.show_page("Docs")

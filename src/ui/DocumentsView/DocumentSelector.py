@@ -14,7 +14,7 @@ class DocumentSelector(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 0)
 
         # --- Add Tree View for Documents ---
-        tree = QTreeView()
+        self.tree = QTreeView()
         self.model = QStandardItemModel()
 
         # Create sample data for tree view
@@ -34,14 +34,14 @@ class DocumentSelector(QWidget):
 
 
         # Set model to tree view
-        tree.setModel(self.model)
-        tree.setHeaderHidden(True)
-        tree.expandAll()
-        tree.show()
-        self.main_layout.addWidget(tree, stretch=1)
+        self.tree.setModel(self.model)
+        self.tree.setHeaderHidden(True)
+        self.tree.expandAll()
+        self.tree.show()
+        self.main_layout.addWidget(self.tree, stretch=1)
         
         # Connect selection change signa
-        tree.selectionModel().selectionChanged.connect(self.on_selection_changed)
+        self.tree.selectionModel().selectionChanged.connect(self.on_selection_changed)
 
         # --- Add and Manage Docs Button On Bottom
         self.add_document = QPushButton("Add Document")
@@ -56,3 +56,29 @@ class DocumentSelector(QWidget):
 
         self.uiparent.openDoc = item_id
         self.uiparent.refresh_page()
+
+    def refresh_page(self, documents, openDoc):
+        # Temporarily block selection handling
+        selection_model = self.tree.selectionModel()
+        selection_model.blockSignals(True)
+
+        # Clear existing items
+        self.model.clear()
+        root = self.model.invisibleRootItem()
+        
+        # Add all the documents to the view
+        for doc in documents:
+            item = QStandardItem(doc.title)
+            item.setData(doc.id, Qt.UserRole)
+            root.appendRow(item)
+
+        # Select the currently open document
+        for row in range(self.model.rowCount()):
+            item = self.model.item(row)
+            if item.data(Qt.UserRole) == openDoc:
+                index = self.model.indexFromItem(item)
+                self.tree.setCurrentIndex(index)
+                break
+
+        # Re-enable selection signals
+        selection_model.blockSignals(False)

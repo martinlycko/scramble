@@ -11,6 +11,7 @@ class DocumentList():
         self.list.append(new_document)
         self.id += 1
         print(f"Document '{title}' added with ID {new_document.id}.")
+        return new_document
 
     def get_document(self, id):
         for doc in self.list:
