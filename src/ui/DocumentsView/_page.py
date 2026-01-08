@@ -46,6 +46,7 @@ class DocumentsPage(QWidget):
 
     def refresh_page(self):
         document = self.project.documents.get_document(self.openDoc)
-        self.title.update(document.title)
-        self.docFrame.update(document.content)
-        self.docTabs.update(None, document.notes, document.attributes)
+        if document:
+            self.title.update(document.title)
+            self.docFrame.update(document.content)
+            self.docTabs.update(None, document.notes, document.attributes)

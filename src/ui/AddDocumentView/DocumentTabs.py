@@ -95,3 +95,14 @@ class DocumentTabs(QWidget):
             item = self.attributes_table.item(row, 0)
             if item:
                 item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+
+    def get_attributes_dict(self):
+        attributes = {}
+        for row in range(self.attributes_table.rowCount()):
+            attr_item = self.attributes_table.item(row, 0)
+            value_item = self.attributes_table.item(row, 1)
+            if attr_item and value_item:
+                attr_name = attr_item.text()
+                attr_value = value_item.text()
+                attributes[attr_name] = attr_value
+        return attributes

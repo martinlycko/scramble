@@ -16,4 +16,7 @@ class DocumentTitle(QWidget):
         self.main_layout.addWidget(self.title_label)
 
     def update(self, DocTitle):
-        self.title_label.setText(DocTitle)
+        if DocTitle != "" and DocTitle is not None:
+            self.title_label.setText(DocTitle)
+        else:
+            self.title_label.setText("Documents")
