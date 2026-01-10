@@ -50,7 +50,7 @@ class DocumentsPage(QWidget):
         if opendocument:
             self.title.update(opendocument.title)
             self.docFrame.update(opendocument.content)
-            self.docTabs.update(None, opendocument.notes, opendocument.attributes)
+            self.docTabs.update(self.project.themes, opendocument.notes, opendocument.attributes)
 
     def save_document_changes(self):
         if self.openDoc != -1:

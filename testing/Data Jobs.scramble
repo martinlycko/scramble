@@ -1,0 +1,29 @@
+{
+  "project_name": "Scramble Project",
+  "file_path": "C:/Users/marti/Coding/scramble/scramble/testing/Data Jobs.scramble",
+  "documents": {
+    "id": 1,
+    "documents": [
+      {
+        "id": 0,
+        "title": "Product Analyst - Data Analysis - AB Testing",
+        "content": "Your new company\n \nA media organisation which owns and operates a proprietary technology platform which enables the creation, distribution and monetisation of digital content experiences. They own several leading brands and have offices in New York, London and Tokyo.\n\nYour new role \n\nThey are looking to recruit a Product analyst to join their Owned and Operated team to work on the analysis of advancing subscription, engagement and audience analytics across their digital platforms. This will include enhancing paywall and registration performance, utilising AI to deliver a more local and personalised experience, supporting AB testing and delivering insights that drive audience growth, monetisation and retention.The Product Analyst will work closely with product, growth and editorial and will connect data with strategy - turning insights into product and content improvements that scale across the portfolio.\n\nThe Product Analyst will be required to contribute to the analytics roadmap, design, implement and evaluate AB tests to enhance aspects of user experience. Lead analytics on first-party data initiatives, collaborate on forecasting for 2026 and build infrastructures to measure LTV by acquisition source. You will also develop deep-dive reporting and insights on content consumption and support evaluation of AI-driven metadata features. Develop, maintain and evolve self-service dashboards across Tableau/ Looker for O&O teams - covering traffic, content, SEO and newsletter performance.\n\nWhat you'll need to succeed \nExperience of working in a Data Analysis/ Product Analyst capacity\nExperience of AB Testing\nStrong experience in SQL - ideally with BigQuery\nKnowledge of GA4 (Google Analytics) or Adobe Analytics\nFamiliarity with subscription and user lifecycle metrics - CAC, churn, CLV, LTV, retention cohorts\nExperience building automated dashboards and data pipelines\nAbility to translate complex data into clear insights and recommendations for non-technical teams\nExperience gained in media, e-commerce or subscription businesses\n\nWhat you'll get in return \n\n\u00a350K + benefits\nHybrid working - 2-3 days in the office\n\nWhat you need to do now \n\nIf you're interested in this role, click 'apply now' to forward an up-to-date copy of your CV, or call us now.\nIf this job isn't quite right for you, but you are looking for a new position, please contact us for a confidential discussion about your career.\n\nHays Specialist Recruitment Limited acts as an employment agency for permanent recruitment and employment business for the supply of temporary workers. By applying for this job you accept the T&C's, Privacy Policy and Disclaimers which can be found at hays.co.uk",
+        "notes": "",
+        "attributes": {
+          "Link": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4329816139",
+          "Sa;ary": "45000",
+          "Min Salary": "40000",
+          "Max Salary": "50000"
+        }
+      }
+    ]
+  },
+  "attributes": {
+    "list": [
+      "Link",
+      "Sa;ary",
+      "Min Salary",
+      "Max Salary"
+    ]
+  }
+}

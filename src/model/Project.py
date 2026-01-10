@@ -1,5 +1,6 @@
 from src.model.Documents.DocumentList import DocumentList
 from src.model.Attributes.Attributes import Attributes
+from src.model.Themes.ThemeList import ThemeList
 
 class Project():
 
@@ -9,6 +10,7 @@ class Project():
 
         self.documents = DocumentList()
         self.attributes = Attributes()
+        self.themes = ThemeList()
 
     def from_dict(self, data):
         print("Loading project " + data.get("project_name") +" from  " + data.get("file_path"))
@@ -16,13 +18,15 @@ class Project():
         self.file_path = data.get("file_path", None)
         self.documents = DocumentList.from_dict(data.get("documents", {}))
         self.attributes = Attributes.from_dict(data.get("attributes", {}))
+        self.themes = ThemeList.from_dict(data.get("themes", {}))
         
     def to_dict(self):
         return {
             "project_name": self.project_name,
             "file_path": self.file_path,
             "documents": self.documents.to_dict(),
-            "attributes": self.attributes.to_dict()
+            "attributes": self.attributes.to_dict(),
+            "themes": self.themes.to_dict()
         }
     
     def add_attribute(self, name):

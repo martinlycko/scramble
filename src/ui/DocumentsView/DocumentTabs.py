@@ -26,28 +26,25 @@ class DocumentTabs(QWidget):
     def create_themes_tab(self):
         # Create a tab and layout for themes
         themes_tab = QWidget()
-        themes_layout = QVBoxLayout(themes_tab)
+        self.themes_layout = QVBoxLayout(themes_tab)
 
         # Create a tree view for themes
-        theme_tree = QTreeView()
-        self.theme_model = QStandardItemModel()
-
-        # Sample data for themes
-        theme_root = self.theme_model.invisibleRootItem()
-        theme_parent = QStandardItem("Parent")
-        theme_parent.setData(1, Qt.UserRole)
-        theme_child = QStandardItem("Child")
-        theme_child.setData(2, Qt.UserRole)
-        theme_parent.appendRow(theme_child)
-        theme_root.appendRow(theme_parent)
+        self.tree = QTreeView()
+        self.model = QStandardItemModel()
 
         # Set model and configure tree view
-        theme_tree.setModel(self.theme_model)
-        theme_tree.setHeaderHidden(True)
-        theme_tree.expandAll()
-        theme_tree.show()
-        themes_layout.addWidget(theme_tree, stretch=1)
-        themes_layout.addWidget(theme_tree)
+        root = self.model.invisibleRootItem()
+        for theme in self.project.themes.list:
+            item = QStandardItem(theme.title)
+            item.setData(theme.id, Qt.UserRole)
+            root.appendRow(item)
+
+        # Set model to tree view
+        self.tree.setModel(self.model)
+        self.tree.setHeaderHidden(True)
+        self.tree.expandAll()
+        self.tree.show()
+        self.themes_layout.addWidget(self.tree, stretch=1)
 
         # Add the themes tab to the main tabs
         self.tabs.addTab(themes_tab, "Themes")
@@ -84,9 +81,16 @@ class DocumentTabs(QWidget):
         self.tabs.addTab(notes_tab, "Notes")
 
     def update(self, Themes, Notes, Attributes):
-        # Update themes tab - tbc
-
-        # TODO - Ensure already changed attribute values are maintained
+        # Temporarily block selection handling
+        selection_model = self.tree.selectionModel()
+        selection_model.blockSignals(True)
+        self.model.clear()
+        root = self.model.invisibleRootItem()
+        for theme in Themes.list:
+            item = QStandardItem(theme.title)
+            item.setData(theme.id, Qt.UserRole)
+            root.appendRow(item)
+        selection_model.blockSignals(False)
 
         # Update attribute tab
         self.attributes_table.setRowCount(0)

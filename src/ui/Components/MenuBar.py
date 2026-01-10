@@ -1,11 +1,11 @@
 import json
 
-from PySide6.QtWidgets import QMenuBar, QFileDialog, QMessageBox, QStyle, QDialog
+from PySide6.QtWidgets import QMenuBar, QFileDialog, QStyle, QDialog
 from PySide6.QtGui import QAction
 
 from src.ui.Components.AddAttributeDialog import AddAttributeDialog
+from src.ui.Components.AddThemeDialog import AddThemeDialog
 
-from src.model.Project import Project
 
 class AppMenuBar(QMenuBar):
     def __init__(self, parent=None, project=None):
@@ -162,7 +162,10 @@ class AppMenuBar(QMenuBar):
             json.dump(self.project.to_dict(), f, indent=2)
 
     def add_theme_dialogue(self):
-        pass
+        dialog = AddThemeDialog(project=self.project)
+        if dialog.exec() == QDialog.Accepted:
+            value = dialog.edit.text()
+        self.uiparent.refresh_page()
 
     def add_attribute_dialogue(self):
         dialog = AddAttributeDialog(project=self.project)
