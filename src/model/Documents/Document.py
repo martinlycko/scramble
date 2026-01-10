@@ -7,4 +7,13 @@ class Document():
         self.notes = notes
         self.attributes = attributes
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "notes": self.notes,
+            "attributes": self.attributes
+        }
+
     

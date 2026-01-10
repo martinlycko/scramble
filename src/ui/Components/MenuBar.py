@@ -1,3 +1,5 @@
+import json
+
 from PySide6.QtWidgets import QMenuBar, QFileDialog, QMessageBox, QStyle, QDialog
 from PySide6.QtGui import QAction
 
@@ -129,19 +131,27 @@ class AppMenuBar(QMenuBar):
 
     def save_as_file(self):
         # Action to save the current project as a new file
-        file_name, _ = QFileDialog.getSaveFileName(
-            self, "Save File", "", "All Files (*)"
+        file_name, selected_filter = QFileDialog.getSaveFileName(
+            self, "Save File", "", "Scramble Project (*.scramble);;All Files (*)"
         )
-        if file_name:
-            QMessageBox.information(self, "Save", f"Saved:\n{file_name}")
+        if not file_name:
+            return
+
+        if not file_name.lower().endswith(".scramble"):
+            file_name += ".scramble"
+
+        self.project.file_path = file_name
+
+        self.save_file()
 
     def save_file(self):
-        # Action to save the current project file
-        file_name, _ = QFileDialog.getSaveFileName(
-            self, "Save File", "", "All Files (*)"
-        )
-        if file_name:
-            QMessageBox.information(self, "Save", f"Saved:\n{file_name}")
+        # Action to save the current project
+        if not self.project.file_path:
+            self.save_as_file()
+            return
+
+        with open(self.project.file_path, "w") as f:
+            json.dump(self.project.to_dict(), f, indent=2)
 
     def add_theme_dialogue(self):
         pass

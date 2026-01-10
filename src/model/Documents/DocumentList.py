@@ -6,6 +6,12 @@ class DocumentList():
         self.id = 0
         self.list = []
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "documents": [doc.to_dict() for doc in self.list]
+        }
+
     def add_document(self, title, content, notes, attributes):
         new_document = Document(self.id, title, content, notes, attributes)
         self.list.append(new_document)
