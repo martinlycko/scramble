@@ -1,0 +1,25 @@
+{
+  "project_name": "Scramble Project",
+  "file_path": "C:/Users/marti/Coding/scramble/scramble/testing/Test Project.scramble",
+  "documents": {
+    "id": 1,
+    "documents": [
+      {
+        "id": 0,
+        "title": "asdf",
+        "content": "asdf",
+        "notes": "ttttt",
+        "attributes": {
+          "asdf": "asdf2",
+          "asdf2": "asdf2"
+        }
+      }
+    ]
+  },
+  "attributes": {
+    "list": [
+      "asdf",
+      "asdf2"
+    ]
+  }
+}

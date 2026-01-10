@@ -10,13 +10,12 @@ class Project():
         self.documents = DocumentList()
         self.attributes = Attributes()
 
-    def add_attribute(self, name):
-        if self.attributes.add(name):
-            for doc in self.documents.list:
-                doc.attributes.update({name: None})
-            return True
-        else:
-            return False
+    def from_dict(self, data):
+        print("Loading project " + data.get("project_name") +" from  " + data.get("file_path"))
+        self.project_name = data.get("project_name", "Scramble Project")
+        self.file_path = data.get("file_path", None)
+        self.documents = DocumentList.from_dict(data.get("documents", {}))
+        self.attributes = Attributes.from_dict(data.get("attributes", {}))
         
     def to_dict(self):
         return {
@@ -25,3 +24,11 @@ class Project():
             "documents": self.documents.to_dict(),
             "attributes": self.attributes.to_dict()
         }
+    
+    def add_attribute(self, name):
+        if self.attributes.add(name):
+            for doc in self.documents.list:
+                doc.attributes.update({name: None})
+            return True
+        else:
+            return False

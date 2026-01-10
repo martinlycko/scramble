@@ -5,6 +5,8 @@ from PySide6.QtGui import QAction
 
 from src.ui.Components.AddAttributeDialog import AddAttributeDialog
 
+from src.model.Project import Project
+
 class AppMenuBar(QMenuBar):
     def __init__(self, parent=None, project=None):
         
@@ -124,10 +126,16 @@ class AppMenuBar(QMenuBar):
     def open_file(self):
         # Action to open a new project file
         file_name, _ = QFileDialog.getOpenFileName(
-            self, "Open File", "", "All Files (*)"
+            self, "Save File", "", "Scramble Project (*.scramble)"
         )
-        if file_name:
-            QMessageBox.information(self, "Open", f"Opened:\n{file_name}")
+        if not file_name:
+            return
+        self.project.from_dict(json.load(open(file_name, "r")))
+        self.project.file_path = file_name
+        print("Opened project " + self.project.project_name + " from " + file_name)
+        print("Project has " + str(len(self.project.documents.list)) + " documents and " + str(len(self.project.attributes.list)) + " attributes.")
+        self.uiparent.refresh_page()
+
 
     def save_as_file(self):
         # Action to save the current project as a new file

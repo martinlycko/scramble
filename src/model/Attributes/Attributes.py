@@ -3,6 +3,14 @@ class Attributes():
     def __init__(self):
         self.list = []
 
+    @classmethod
+    def from_dict(cls, data):
+        attributes = cls()
+        for attr in data.get("list", []):
+            print("Loading attribute: " + str(attr))
+            attributes.list.append(attr)
+        return attributes
+
     def to_dict(self):
         return {
             "list": [

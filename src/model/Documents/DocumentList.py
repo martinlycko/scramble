@@ -6,6 +6,15 @@ class DocumentList():
         self.id = 0
         self.list = []
 
+    @classmethod
+    def from_dict(cls, data):
+        document_list = cls()
+        document_list.id = data.get("id", 0)
+        for doc_data in data.get("documents", []):
+            document = Document.from_dict(doc_data)
+            document_list.list.append(document)
+        return document_list
+
     def to_dict(self):
         return {
             "id": self.id,

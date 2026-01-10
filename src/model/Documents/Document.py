@@ -7,6 +7,17 @@ class Document():
         self.notes = notes
         self.attributes = attributes
 
+    @classmethod
+    def from_dict(cls, data):
+        print("Loading document " + data.get("title") +" with ID " + str(data.get("id")))
+        return cls(
+            id=data.get("id"),
+            title=data.get("title", ""),
+            content=data.get("content", ""),
+            notes=data.get("notes", ""),
+            attributes=data.get("attributes", {})
+        )
+
     def to_dict(self):
         return {
             "id": self.id,
