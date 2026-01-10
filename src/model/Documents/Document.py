@@ -27,4 +27,7 @@ class Document():
             "attributes": self.attributes
         }
 
+    def update_content(self, notes, attributes):
+        self.notes = notes
+        self.attributes = attributes
     

@@ -49,12 +49,6 @@ class DocumentTabs(QWidget):
         themes_layout.addWidget(theme_tree, stretch=1)
         themes_layout.addWidget(theme_tree)
 
-        # Buttons for adding and managing themes
-        self.add_themes = QPushButton("Add Attributes")
-        themes_layout.addWidget(self.add_themes)
-        self.manage_themes = QPushButton("Manage Attributes")
-        themes_layout.addWidget(self.manage_themes)
-
         # Add the themes tab to the main tabs
         self.tabs.addTab(themes_tab, "Themes")
 
@@ -73,17 +67,6 @@ class DocumentTabs(QWidget):
         attributes_layout = QVBoxLayout(attributes_tab)
         attributes_layout.addWidget(self.attributes_table)
 
-        # Buttons for adding attributes
-        self.add_attributes = QPushButton("Add Attribute")
-        self.add_attributes.clicked.connect(self.add_attribute)
-        attributes_layout.addWidget(self.add_attributes)
-
-        # Buttons for saving and managing attributes
-        self.save_attributes = QPushButton("Save Attributes")
-        attributes_layout.addWidget(self.save_attributes)
-        self.manage_attributes = QPushButton("Manage Attributes")
-        attributes_layout.addWidget(self.manage_attributes)
-
         # Add the attributes tab to the main tabs
         self.tabs.addTab(attributes_tab, "Attributes")
 
@@ -96,10 +79,6 @@ class DocumentTabs(QWidget):
         notes_tab = QWidget()
         notes_layout = QVBoxLayout(notes_tab)
         notes_layout.addWidget(self.notes_editor)
-
-        # Buttons for saving notes
-        self.save_notes = QPushButton("Save Notes")
-        notes_layout.addWidget(self.save_notes)
 
         # Add the notes tab to the main tabs
         self.tabs.addTab(notes_tab, "Notes")

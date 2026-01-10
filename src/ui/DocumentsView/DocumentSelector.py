@@ -43,10 +43,6 @@ class DocumentSelector(QWidget):
         # Connect selection change signa
         self.tree.selectionModel().selectionChanged.connect(self.on_selection_changed)
 
-        # --- Add and Manage Docs Button On Bottom
-        self.add_document = QPushButton("Add Document")
-        self.main_layout.addWidget(self.add_document)
-
     def on_selection_changed(self, selected, deselected):
         if not selected.indexes():
             return

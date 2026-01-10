@@ -20,7 +20,7 @@ class DocumentsPage(QWidget):
         self.main_layout.setContentsMargins(0, 0, 0, 4)
 
         # Add title bar
-        self.title = DocumentTitle()
+        self.title = DocumentTitle(self, self.project)
         self.title.setFixedHeight(40)
         self.main_layout.addWidget(self.title)
 
@@ -51,3 +51,21 @@ class DocumentsPage(QWidget):
             self.title.update(opendocument.title)
             self.docFrame.update(opendocument.content)
             self.docTabs.update(None, opendocument.notes, opendocument.attributes)
+
+    def save_document_changes(self):
+        if self.openDoc != -1:
+            document = self.project.documents.get_document(self.openDoc)
+
+            notes = self.docTabs.notes_editor.toPlainText()
+            
+            attributes = {}
+            for row in range(self.docTabs.attributes_table.rowCount()):
+                key_item = self.docTabs.attributes_table.item(row, 0)
+                value_item = self.docTabs.attributes_table.item(row, 1)
+                if key_item and value_item:
+                    key = key_item.text()
+                    value = value_item.text() if value_item else ""
+                    attributes[key] = value
+
+            if document:
+                document.update_content(notes, attributes)
