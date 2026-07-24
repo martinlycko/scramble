@@ -54,6 +54,14 @@ class ProjectStore {
         }
     }
 
+    closeProject() {
+        this.path = null;
+        this.name = null;
+        this.sourceCount = 0;
+        this.codeCount = 0;
+        this.lastSaved = null;
+        this.error = null;
+    }
 
     private apply(path: string, data: ProjectData) {
         this.path = path;

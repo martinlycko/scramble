@@ -4,16 +4,24 @@
     import Sidebar from "$lib/components/Sidebar.svelte";
     import StatusBar from "$lib/components/StatusBar.svelte";
     import { projectStore } from "$lib/stores/project.svelte";
+    import { uiStore } from "$lib/stores/ui.svelte";
 
     let { children }: { children: Snippet } = $props();
 
-    let activeSection = $state("sources");
+    $effect(() => {
+        if (!projectStore.path) {
+            uiStore.activeSection = "project";
+        }
+    });
 </script>
 
 <div class="app-shell">
     <MenuBar />
     <div class="workspace">
-        <Sidebar bind:activeSection />
+        <Sidebar
+            bind:activeSection={uiStore.activeSection}
+            projectActive={!!projectStore.path}
+        />
         <main class="content-area">
             {@render children()}
         </main>

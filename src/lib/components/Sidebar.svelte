@@ -1,11 +1,13 @@
 <script lang="ts">
+    import type { Section } from "$lib/stores/ui.svelte";
+
     type NavSection = {
-        id: string;
+        id: Section;
         label: string;
         icon: string;
     };
 
-    const sections: NavSection[] = [
+    const topSections: NavSection[] = [
         {
             id: "sources",
             label: "Sources",
@@ -27,17 +29,48 @@
         },
     ];
 
-    let { activeSection = $bindable("sources") }: { activeSection?: string } =
-        $props();
+    const bottomSections: NavSection[] = [
+        {
+            id: "project",
+            label: "Project",
+            icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+      </svg>`,
+        },
+    ];
+
+    let {
+        activeSection = $bindable<Section>("project"),
+        projectActive = false,
+    }: { activeSection?: Section; projectActive?: boolean } = $props();
+
+    function select(id: Section, enabled: boolean) {
+        if (!enabled) return;
+        activeSection = id;
+    }
 </script>
 
 <nav class="sidebar">
     <div class="sidebar-section">
-        {#each sections as section}
+        {#each topSections as section}
             <button
                 class="nav-item"
                 class:active={activeSection === section.id}
-                onclick={() => (activeSection = section.id)}
+                disabled={!projectActive}
+                onclick={() => select(section.id, projectActive)}
+                title={section.label}
+            >
+                <span class="nav-icon">{@html section.icon}</span>
+            </button>
+        {/each}
+    </div>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-section">
+        {#each bottomSections as section}
+            <button
+                class="nav-item"
+                class:active={activeSection === section.id}
+                onclick={() => select(section.id, true)}
                 title={section.label}
             >
                 <span class="nav-icon">{@html section.icon}</span>
@@ -64,6 +97,10 @@
         gap: 2px;
     }
 
+    .sidebar-spacer {
+        flex: 1;
+    }
+
     .nav-item {
         all: unset;
         display: flex;
@@ -88,6 +125,16 @@
         background: var(--color-accent-bg);
         color: var(--color-accent);
         font-weight: 500;
+    }
+
+    .nav-item:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    .nav-item:disabled:hover {
+        background: none;
+        color: var(--color-text-muted);
     }
 
     .nav-icon {
