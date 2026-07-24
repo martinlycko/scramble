@@ -29,11 +29,15 @@
                     action: () => projectStore.openProject(),
                 },
                 {
+                    label: "Save Project",
+                    shortcut: "Ctrl+S",
+                    action: () => projectStore.saveProject(),
+                },
+                {
                     label: "Close Project...",
                     shortcut: "",
                     action: () => projectStore.closeProject(),
                 },
-                //{ label: 'Save Project', shortcut: 'Ctrl+S', action: () => {} },
                 //{ separator: true },
                 //{ label: 'Import Files...', action: () => {} },
                 //{ label: 'Export Project...', action: () => {} },

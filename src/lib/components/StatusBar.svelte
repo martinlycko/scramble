@@ -4,11 +4,13 @@
         sourceCount = 0,
         codeCount = 0,
         lastSaved = null,
+        dirty = false,
     }: {
         projectName?: string | null;
         sourceCount?: number;
         codeCount?: number;
         lastSaved?: Date | null;
+        dirty?: boolean;
     } = $props();
 
     let lastSavedLabel = $derived(
@@ -86,24 +88,42 @@
 
     <div class="status-spacer"></div>
 
-    <div class="status-segment">
-        <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-        >
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12,6 12,12 16,14" />
-        </svg>
-        <span
-            >{#if lastSavedLabel != "Not saved"}Saved
-            {/if}{lastSavedLabel}</span
-        >
+    <div class="status-segment" class:dirty>
+        {#if dirty}
+            <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span>Unsaved changes</span>
+        {:else}
+            <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12,6 12,12 16,14" />
+            </svg>
+            <span
+                >{#if lastSavedLabel != "Not saved"}Saved
+                {/if}{lastSavedLabel}</span
+            >
+        {/if}
     </div>
 </footer>
 
@@ -153,5 +173,14 @@
 
     .status-spacer {
         flex: 1;
+    }
+
+    .status-segment.dirty {
+        color: #d97706;
+        font-weight: 500;
+    }
+
+    .status-segment.dirty svg {
+        opacity: 1;
     }
 </style>

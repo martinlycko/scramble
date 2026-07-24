@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
+    import { getCurrentWindow } from "@tauri-apps/api/window";
     import MenuBar from "$lib/components/MenuBar.svelte";
     import Sidebar from "$lib/components/Sidebar.svelte";
     import StatusBar from "$lib/components/StatusBar.svelte";
@@ -12,6 +13,20 @@
         if (!projectStore.path) {
             uiStore.activeSection = "project";
         }
+    });
+
+    $effect(() => {
+        const unlistenPromise = getCurrentWindow().onCloseRequested(async (event) => {
+            const canClose = await projectStore.confirmDiscard(
+                "You have unsaved changes. Quit without saving?",
+            );
+            if (!canClose) {
+                event.preventDefault();
+            }
+        });
+        return () => {
+            unlistenPromise.then((unlisten) => unlisten());
+        };
     });
 </script>
 
@@ -31,6 +46,7 @@
         sourceCount={projectStore.sourceCount}
         codeCount={projectStore.codeCount}
         lastSaved={projectStore.lastSaved}
+        dirty={projectStore.dirty}
     />
 </div>
 
