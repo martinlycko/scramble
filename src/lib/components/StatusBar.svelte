@@ -38,7 +38,7 @@
             />
         </svg>
         <span
-            >{#if (projectName = null)}{projectName}{:else}"No project open"{/if}</span
+            >{#if projectName}{projectName}{:else}No project open{/if}</span
         >
     </div>
 

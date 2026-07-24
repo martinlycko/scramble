@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { projectStore } from "$lib/stores/project.svelte";
+
     type SeparatorItem = { separator: true };
     type ActionItem = { label: string; shortcut?: string; action: () => void };
     type MenuEntry = ActionItem | SeparatorItem;
@@ -16,11 +18,15 @@
             id: "file",
             label: "File",
             items: [
-                { label: "New Project", shortcut: "Ctrl+N", action: () => {} },
+                {
+                    label: "New Project",
+                    shortcut: "Ctrl+N",
+                    action: () => projectStore.newProject(),
+                },
                 {
                     label: "Open Project...",
                     shortcut: "Ctrl+O",
-                    action: () => {},
+                    action: () => projectStore.openProject(),
                 },
                 //{ label: 'Save Project', shortcut: 'Ctrl+S', action: () => {} },
                 //{ separator: true },

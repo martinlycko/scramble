@@ -3,14 +3,11 @@
     import MenuBar from "$lib/components/MenuBar.svelte";
     import Sidebar from "$lib/components/Sidebar.svelte";
     import StatusBar from "$lib/components/StatusBar.svelte";
+    import { projectStore } from "$lib/stores/project.svelte";
 
     let { children }: { children: Snippet } = $props();
 
     let activeSection = $state("sources");
-    let projectName = $state(null);
-    let sourceCount = $state(0);
-    let codeCount = $state(0);
-    let lastSaved = $state<Date | null>(null);
 </script>
 
 <div class="app-shell">
@@ -21,7 +18,12 @@
             {@render children()}
         </main>
     </div>
-    <StatusBar {projectName} {sourceCount} {codeCount} {lastSaved} />
+    <StatusBar
+        projectName={projectStore.name}
+        sourceCount={projectStore.sourceCount}
+        codeCount={projectStore.codeCount}
+        lastSaved={projectStore.lastSaved}
+    />
 </div>
 
 <style>
